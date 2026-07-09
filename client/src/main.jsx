@@ -1,16 +1,20 @@
-import ReactDOM from 'react-dom/client'
+import ReactDOM from "react-dom/client";
 
-import App from './App.jsx'
+import App from "./App.jsx";
 
-import { StoreProvider } from "./context/StoreContext.jsx"
+import { StoreProvider } from "./context/StoreContext.jsx";
 
-import "./index.css"
+import "./index.css";
 
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(
+    document.getElementById("root")
+).render(
 
     <StoreProvider>
+
         <App />
+
     </StoreProvider>
 
-)
+);

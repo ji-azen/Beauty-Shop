@@ -1,4 +1,6 @@
-import { useStore } from "../../context/useStore";
+import { Link } from "react-router-dom";
+import { useStore } from "../../context/StoreContext";
+
 import "./ProductCard.css";
 
 import {
@@ -7,73 +9,114 @@ import {
     FiStar
 } from "react-icons/fi";
 
-function ProductCard({product}) {
+
+function ProductCard({ product }) {
+
     const {
+        addToCart,
+        toggleWishlist,
+        wishlist
+    } = useStore();
 
-       addToCart,
-       toggleWishlist,
-       wishlist
 
-} = useStore();
+    const isFavorite = wishlist.some(
+        item => item.id === product.id
+    );
 
-const isFavorite = wishlist.some(
-    item => item.id === product.id
-);
 
     return (
 
         <div className="product-card">
 
-            <div className="product-image">
-                <img
-                    src={product.image}
-                    alt={product.name}
-                />
-            </div>
 
-            <div className="product-info">
+            <Link 
+                to={`/product/${product.id}`}
+                className="product-link"
+            >
 
-                <h3>{product.brand}</h3>
+                <div className="product-image">
 
-                <p>{product.name}</p>
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                    />
 
-                <div className="rating">
+                </div>
 
-                    <FiStar />
 
-                    <span>{product.rating}</span>
+                <div className="product-info">
 
-                    <small>({product.review})</small>
+                    <h3>
+                        {product.brand}
+                    </h3>
 
-            </div>
-                <h2>
-                Rp {product.price.toLocaleString("id-ID")}
-                </h2>
-            </div>
+
+                    <p>
+                        {product.name}
+                    </p>
+
+
+                    <div className="rating">
+
+                        <FiStar />
+
+                        <span>
+                            {product.rating}
+                        </span>
+
+                        <small>
+                            ({product.review})
+                        </small>
+
+                    </div>
+
+
+                    <h2>
+                        Rp {product.price.toLocaleString("id-ID")}
+                    </h2>
+
+
+                </div>
+
+            </Link>
+
+
 
             <div className="product-action">
+
+
                 <button
                     onClick={() => toggleWishlist(product)}
                 >
+
                     <FiHeart
-                    color={isFavorite ? "red" : ""}
-                />
+                        color={isFavorite ? "red" : ""}
+                    />
+
                 </button>
+
+
 
                 <button
                     className="cart-btn"
                     onClick={() => addToCart(product)}
                 >
+
                     <FiShoppingCart />
+
                     Tambah
+
                 </button>
 
+
             </div>
+
 
         </div>
 
     );
 
 }
+
 
 export default ProductCard;
