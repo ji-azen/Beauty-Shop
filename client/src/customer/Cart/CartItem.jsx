@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -15,12 +15,6 @@ import "./Cart.css";
 function Cart(){
 
 
-
-    const navigate = useNavigate();
-
-
-
-
     const {
 
         cart,
@@ -29,14 +23,9 @@ function Cart(){
 
         decreaseQty,
 
-        removeFromCart,
-
-        setCheckoutItems
-
+        removeFromCart
 
     } = useStore();
-
-
 
 
 
@@ -52,15 +41,10 @@ function Cart(){
 
 
 
-
-    // PILIH PRODUK
-
     const toggleSelect = (id)=>{
 
 
-
         if(selected.includes(id)){
-
 
 
             setSelected(
@@ -74,9 +58,7 @@ function Cart(){
             );
 
 
-
         }else{
-
 
 
             setSelected([
@@ -88,13 +70,10 @@ function Cart(){
             ]);
 
 
-
         }
 
 
-
     };
-
 
 
 
@@ -103,12 +82,9 @@ function Cart(){
 
     const selectedItems = cart.filter(
 
-
         item => selected.includes(item.id)
 
-
     );
-
 
 
 
@@ -117,45 +93,13 @@ function Cart(){
 
     const total = selectedItems.reduce(
 
-
-
         (sum,item)=>
-
 
         sum + (item.price * item.qty),
 
-
-
         0
 
-
-
     );
-
-
-
-
-
-
-
-
-
-    const handleCheckout = ()=>{
-
-
-
-        setCheckoutItems(selectedItems);
-
-
-
-        navigate("/checkout");
-
-
-
-    };
-
-
-
 
 
 
@@ -165,8 +109,6 @@ function Cart(){
 
     return(
 
-
-
         <>
 
 
@@ -174,9 +116,7 @@ function Cart(){
 
 
 
-
         <div className="cart-page">
-
 
 
 
@@ -194,17 +134,13 @@ function Cart(){
 
 
 
-
-
             {
 
                 cart.length === 0 ? (
 
 
 
-
                     <div className="empty-cart">
-
 
 
                         <h2>
@@ -212,7 +148,6 @@ function Cart(){
                             Keranjang masih kosong 😢
 
                         </h2>
-
 
 
                         <p>
@@ -227,8 +162,6 @@ function Cart(){
 
 
 
-
-
                 )
 
 
@@ -237,10 +170,7 @@ function Cart(){
 
 
 
-
-
                 (
-
 
 
 
@@ -257,21 +187,15 @@ function Cart(){
 
 
 
-
-
                     {
 
-
-                        cart.map(item => (
-
+                        cart.map(item=>(
 
 
                             <CartItem
 
 
-
                                 key={item.id}
-
 
 
                                 item={item}
@@ -309,7 +233,6 @@ function Cart(){
                             />
 
 
-
                         ))
 
 
@@ -320,10 +243,7 @@ function Cart(){
 
 
 
-
-
                 </div>
-
 
 
 
@@ -338,21 +258,14 @@ function Cart(){
 
 
 
-
-
                     <div>
-
 
 
                         <p>
 
                             Dipilih:
 
-                            {" "}
-
                             {selected.length}
-
-                            {" "}
 
                             produk
 
@@ -361,18 +274,11 @@ function Cart(){
 
 
 
-
-
                         <h2>
-
-
 
                             Rp {total.toLocaleString("id-ID")}
 
-
-
                         </h2>
-
 
 
                     </div>
@@ -383,31 +289,31 @@ function Cart(){
 
 
 
+                    {
 
-
-                    <button
-
-
-
-                        onClick={handleCheckout}
+                        selected.length > 0 && (
 
 
 
-                        disabled={selected.length === 0}
+                            <Link to="/checkout">
+
+
+                                <button>
+
+
+                                    Checkout
+
+
+                                </button>
+
+
+                            </Link>
 
 
 
-                    >
+                        )
 
-
-
-                        Checkout
-
-
-
-                    </button>
-
-
+                    }
 
 
 
@@ -422,17 +328,15 @@ function Cart(){
 
 
 
-
-
                 </>
+
 
 
 
                 )
 
-
-
             }
+
 
 
 
@@ -445,14 +349,10 @@ function Cart(){
 
 
 
-
         </>
 
 
-
     );
-
-
 
 
 }

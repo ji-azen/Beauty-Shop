@@ -1,28 +1,42 @@
 import "./ProductGrid.css";
+
 import ProductCard from "../ProductCard/ProductCard";
+
+import products from "../../data/products";
+
 
 function ProductGrid(){
 
+
     return(
+
 
         <div className="product-grid">
 
-            <ProductCard/>
 
-            <ProductCard/>
+            {
 
-            <ProductCard/>
+                products.map(product => (
 
-            <ProductCard/>
+                    <ProductCard
 
-            <ProductCard/>
+                        key={product.id}
 
-            <ProductCard/>
+                        product={product}
+
+                    />
+
+                ))
+
+            }
+
 
         </div>
 
-    )
+
+    );
 
 }
+
 
 export default ProductGrid;

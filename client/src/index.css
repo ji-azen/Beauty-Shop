@@ -7,3 +7,25 @@
 body {
     font-family: Arial, sans-serif;
 }
+
+.toast{
+
+    position:fixed;
+
+    top:90px;
+
+    right:30px;
+
+    background:#6ea8ff;
+
+    color:white;
+
+    padding:15px 25px;
+
+    border-radius:15px;
+
+    z-index:999;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}

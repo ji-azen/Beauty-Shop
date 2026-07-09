@@ -1,122 +1,183 @@
 import { Link } from "react-router-dom";
+
+import {
+    FiHeart,
+    FiShoppingCart
+} from "react-icons/fi";
+
 import { useStore } from "../../context/StoreContext";
 
 import "./ProductCard.css";
 
-import {
-    FiHeart,
-    FiShoppingCart,
-    FiStar
-} from "react-icons/fi";
 
 
-function ProductCard({ product }) {
+function ProductCard({product}){
+
 
     const {
+
         addToCart,
+
         toggleWishlist,
+
         wishlist
+
     } = useStore();
 
 
-    const isFavorite = wishlist.some(
-        item => item.id === product.id
+
+
+
+    const isWishlisted = wishlist.some(
+
+        item=>item.id===product.id
+
     );
 
 
-    return (
+
+
+
+    return(
+
 
         <div className="product-card">
 
 
-            <Link 
+            <Link
+
                 to={`/product/${product.id}`}
-                className="product-link"
+
             >
 
-                <div className="product-image">
+                <img
 
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                    />
+                    src={product.image}
 
-                </div>
+                    alt={product.name}
 
-
-                <div className="product-info">
-
-                    <h3>
-                        {product.brand}
-                    </h3>
-
-
-                    <p>
-                        {product.name}
-                    </p>
-
-
-                    <div className="rating">
-
-                        <FiStar />
-
-                        <span>
-                            {product.rating}
-                        </span>
-
-                        <small>
-                            ({product.review})
-                        </small>
-
-                    </div>
-
-
-                    <h2>
-                        Rp {product.price.toLocaleString("id-ID")}
-                    </h2>
-
-
-                </div>
+                />
 
             </Link>
 
 
 
-            <div className="product-action">
 
 
-                <button
-                    onClick={() => toggleWishlist(product)}
+            <div className="product-info">
+
+
+                <p>
+
+                    {product.brand}
+
+                </p>
+
+
+
+                <Link
+
+                    to={`/product/${product.id}`}
+
                 >
 
-                    <FiHeart
-                        color={isFavorite ? "red" : ""}
-                    />
+                    <h3>
 
-                </button>
+                        {product.name}
+
+                    </h3>
+
+                </Link>
 
 
 
-                <button
-                    className="cart-btn"
-                    onClick={() => addToCart(product)}
-                >
 
-                    <FiShoppingCart />
 
-                    Tambah
+                <span>
 
-                </button>
+                    ⭐ {product.rating}
+
+                </span>
+
+
+
+
+
+                <h3>
+
+                    Rp {product.price.toLocaleString("id-ID")}
+
+                </h3>
+
+
+
+
+
+                <div className="product-action">
+
+
+                    <button
+
+                        onClick={()=>toggleWishlist(product)}
+
+                    >
+
+                        <FiHeart
+
+                            fill={
+                                isWishlisted
+                                ?
+                                "red"
+                                :
+                                "none"
+                            }
+
+                            color={
+                                isWishlisted
+                                ?
+                                "red"
+                                :
+                                "black"
+                            }
+
+                        />
+
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        onClick={()=>addToCart(product)}
+
+                    >
+
+                        <FiShoppingCart/>
+
+                        Keranjang
+
+                    </button>
+
+
+                </div>
+
 
 
             </div>
 
 
+
         </div>
+
 
     );
 
+
 }
+
 
 
 export default ProductCard;

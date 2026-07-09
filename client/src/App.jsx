@@ -1,11 +1,36 @@
 import AppRouter from "./routes/AppRouter";
 
+import { useStore } from "./context/StoreContext";
 
-function App() {
 
-    return (
+function App(){
 
-        <AppRouter />
+
+    const { message } = useStore();
+
+
+
+    return(
+
+        <>
+
+            {
+                message && (
+
+                    <div className="toast">
+
+                        {message}
+
+                    </div>
+
+                )
+            }
+
+
+            <AppRouter />
+
+
+        </>
 
     );
 

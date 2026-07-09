@@ -1,9 +1,4 @@
 import { useState } from "react";
-import "./Navbar.css";
-
-import Sidebar from "../Sidebar/Sidebar";
-
-import { Link } from "react-router-dom";
 
 import {
     FiSearch,
@@ -11,71 +6,358 @@ import {
     FiShoppingCart,
     FiUser,
     FiMenu,
+    FiLogOut
 } from "react-icons/fi";
 
-function Navbar() {
 
-    const [openSidebar, setOpenSidebar] = useState(false);
+import {
+    Link,
+    useNavigate
+} from "react-router-dom";
 
-    return (
+
+import Sidebar from "../Sidebar/Sidebar";
+
+
+import { useAuth } from "../../context/AuthContext";
+
+import { useStore } from "../../context/StoreContext";
+
+
+import "./Navbar.css";
+
+
+
+function Navbar(){
+
+
+    const [openSidebar,setOpenSidebar] = useState(false);
+
+    const [openUser,setOpenUser] = useState(false);
+
+
+
+    const navigate = useNavigate();
+
+
+
+    const {
+        user,
+        logout
+    } = useAuth();
+
+
+
+    const {
+        cart
+    } = useStore();
+
+
+
+
+
+    const totalCart = cart.reduce(
+
+        (sum,item)=>sum + item.qty,
+
+        0
+
+    );
+
+
+
+
+
+    const handleLogout = ()=>{
+
+
+        logout();
+
+        setOpenUser(false);
+
+        navigate("/login");
+
+
+    };
+
+
+
+
+
+    return(
 
         <>
 
-            <nav className="navbar">
 
-                <div className="logo">
-                    🩵 Beauty Store
-                </div>
+        <nav className="navbar">
 
-                <div className="search-box">
 
-                    <FiSearch />
 
-                    <input
-                        type="text"
-                        placeholder="Cari skincare, makeup..."
-                    />
+            <Link 
+                to="/"
+                className="logo"
+            >
 
-                </div>
+                🩵 Beauty Store
 
-                <div className="menu-right">
+            </Link>
+
+
+
+
+
+            <div className="search-box">
+
+
+                <FiSearch/>
+
+
+                <input
+
+                    type="text"
+
+                    placeholder="Cari skincare, makeup..."
+
+                />
+
+
+            </div>
+
+
+
+
+
+
+            <div className="menu-right">
+
+
+
+
+
+                <button
+
+                    className="filter-btn"
+
+                    onClick={()=>setOpenSidebar(true)}
+
+                >
+
+                    <FiMenu/>
+
+                    Filter
+
+                </button>
+
+
+
+
+
+
+
+                <Link to="/wishlist">
+
+                    <FiHeart/>
+
+                </Link>
+
+
+
+
+
+
+
+                <Link
+
+                    to="/cart"
+
+                    className="cart-icon"
+
+                >
+
+                    <FiShoppingCart/>
+
+                    
+                    {
+
+                        totalCart > 0 && (
+
+                            <span className="badge">
+
+                                {totalCart}
+
+                            </span>
+
+                        )
+
+                    }
+
+
+                </Link>
+
+
+
+
+
+
+
+                <div className="user-area">
+
+
 
                     <button
-                        className="filter-btn"
-                        onClick={() => setOpenSidebar(true)}
+
+                        className="user-btn"
+
+                        onClick={()=>setOpenUser(!openUser)}
+
                     >
 
-                        <FiMenu />
+                        <FiUser/>
 
-                        Filter
+
+                        {
+
+                            user && (
+
+                                <span>
+
+                                    {user.name}
+
+                                </span>
+
+                            )
+
+                        }
+
 
                     </button>
 
-                    <Link to="/wishlist">
-                        <FiHeart />
-                    </Link>
 
-                    <Link to="/cart">
-                        <FiShoppingCart />
-                    </Link>
 
-                    <Link to="/profile">
-                        <FiUser />
-                    </Link>
+
+
+
+
+                    {
+
+                        openUser && (
+
+
+                            <div className="user-dropdown">
+
+
+
+                            {
+
+                                user ? (
+
+
+                                    <>
+
+
+                                    <Link to="/profile">
+
+                                        👤 Profile Saya
+
+                                    </Link>
+
+
+
+                                    <button
+
+                                        onClick={handleLogout}
+
+                                    >
+
+                                        <FiLogOut/>
+
+                                        Logout
+
+                                    </button>
+
+
+                                    </>
+
+
+                                )
+
+                                :
+
+
+                                (
+
+                                    <>
+
+
+                                    <Link to="/login">
+
+                                        Login
+
+                                    </Link>
+
+
+
+                                    <Link to="/register">
+
+                                        Daftar
+
+                                    </Link>
+
+
+                                    </>
+
+
+                                )
+
+
+                            }
+
+
+
+                            </div>
+
+
+
+                        )
+
+
+                    }
+
+
 
                 </div>
 
-            </nav>
 
-            <Sidebar
-                open={openSidebar}
-                onClose={() => setOpenSidebar(false)}
-            />
+
+
+
+            </div>
+
+
+
+
+        </nav>
+
+
+
+
+
+        <Sidebar
+
+            open={openSidebar}
+
+            onClose={()=>setOpenSidebar(false)}
+
+        />
+
+
 
         </>
+
 
     );
 
 }
+
 
 export default Navbar;

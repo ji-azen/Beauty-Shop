@@ -1,18 +1,37 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route
+} from "react-router-dom";
 
+
+// CUSTOMER
 import Home from "../customer/Home/Home";
 import Cart from "../customer/Cart/Cart";
 import Wishlist from "../customer/Wishlist/Wishlist";
 import ProductDetail from "../customer/ProductDetail/ProductDetail";
+import Profile from "../customer/Profile/Profile";
+import Checkout from "../customer/Checkout/Checkout";
 
 
-function AppRouter() {
+// AUTH
+import Login from "../auth/Login/Login";
+import Register from "../auth/Register/Register";
+import ForgotPassword from "../auth/ForgotPassword/ForgotPassword";
 
-    return (
+
+function AppRouter(){
+
+
+    return(
 
         <BrowserRouter>
 
+
             <Routes>
+
+
+                {/* CUSTOMER */}
 
                 <Route
                     path="/"
@@ -38,7 +57,39 @@ function AppRouter() {
                 />
 
 
+
+                {/* AUTH */}
+
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
+
+
+                <Route
+                    path="/forgot-password"
+                    element={<ForgotPassword />}
+                />
+
+
+                <Route
+                    path="/profile"
+                    element={<Profile />}
+                />
+
+
+                <Route
+                    path="/checkout"
+                    element={<Checkout />}
+                />
             </Routes>
+
 
         </BrowserRouter>
 

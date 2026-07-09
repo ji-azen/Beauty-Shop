@@ -1,20 +1,38 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 
 import App from "./App.jsx";
 
-import { StoreProvider } from "./context/StoreContext.jsx";
+import {
+    StoreProvider
+} from "./context/StoreContext.jsx";
+
+
+import {
+    AuthProvider
+} from "./context/AuthContext.jsx";
+
 
 import "./index.css";
 
 
 ReactDOM.createRoot(
     document.getElementById("root")
-).render(
+)
+.render(
 
-    <StoreProvider>
+    <React.StrictMode>
 
-        <App />
+        <AuthProvider>
 
-    </StoreProvider>
+            <StoreProvider>
+
+                <App />
+
+            </StoreProvider>
+
+        </AuthProvider>
+
+    </React.StrictMode>
 
 );

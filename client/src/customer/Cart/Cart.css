@@ -1,165 +1,492 @@
-.cart-page {
+.cart-page{
 
-    padding: 40px;
-    max-width: 1100px;
-    margin: auto;
+    min-height:100vh;
 
-}
+    background:#f7f8fc;
 
+    padding:40px;
 
-.cart-page h1 {
-
-    margin-bottom: 30px;
+    padding-bottom:130px;
 
 }
 
 
 
-.cart-list {
+.cart-page h1{
 
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    margin-bottom:30px;
 
-}
-
-
-
-.cart-item {
-
-    display: flex;
-    gap: 20px;
-
-    padding: 20px;
-
-    border-radius: 15px;
-
-    background: white;
-
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    color:#333;
 
 }
 
 
 
-.cart-item img {
-
-    width: 120px;
-    height: 120px;
-
-    object-fit: cover;
-
-    border-radius: 12px;
-
-}
 
 
+/* LIST PRODUK */
 
-.cart-info {
+.cart-list{
 
-    flex: 1;
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
 
 }
 
 
 
-.cart-info h3 {
-
-    margin: 0;
-
-}
 
 
+/* WRAPPER UNTUK SWIPE */
 
-.cart-info p {
+.cart-wrapper{
 
-    color: #777;
+    position:relative;
 
-}
+    overflow:hidden;
 
-
-
-.qty {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin: 15px 0;
+    border-radius:20px;
 
 }
 
 
 
-.qty button {
-
-    width: 35px;
-    height: 35px;
-
-    border: none;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-}
 
 
+/* TOMBOL HAPUS DI BELAKANG */
 
-.qty span {
+.delete-slide{
 
-    font-size: 18px;
+    position:absolute;
 
-}
+    right:0;
 
+    top:0;
 
+    width:110px;
 
-.delete {
+    height:100%;
 
-    border: none;
+    background:#ff6b6b;
 
-    background: transparent;
+    display:flex;
 
-    color: red;
+    justify-content:center;
 
-    cursor: pointer;
+    align-items:center;
 
 }
 
 
 
-.cart-total {
 
-    margin-top: 30px;
 
-    padding: 25px;
+.delete-slide button{
 
-    border-radius: 15px;
+    border:none;
 
-    background: white;
+    background:none;
 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    color:white;
 
-    display: flex;
+    font-size:15px;
 
-    justify-content: space-between;
+    font-weight:bold;
 
-    align-items: center;
+    cursor:pointer;
 
 }
 
 
 
-.cart-total button {
 
-    padding: 12px 30px;
 
-    border: none;
+/* KARTU PRODUK */
 
-    border-radius: 10px;
+.cart-card{
 
-    cursor: pointer;
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.08);
+
+
+    transition:.3s;
+
+}
+
+
+
+
+
+/* SAAT DIGESER */
+
+.show-delete{
+
+    transform:translateX(-110px);
+
+}
+
+
+
+
+
+/* CHECKBOX */
+
+.cart-card input{
+
+    width:22px;
+
+    height:22px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+/* GAMBAR PRODUK */
+
+.cart-card img{
+
+    width:130px;
+
+    height:130px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+
+}
+
+
+
+
+
+/* INFO */
+
+.cart-info{
+
+    flex:1;
+
+}
+
+
+
+.cart-info h3{
+
+    margin:0;
+
+    color:#5d8ef7;
+
+    font-size:20px;
+
+}
+
+
+
+.cart-info p{
+
+    margin:8px 0;
+
+    color:#555;
+
+}
+
+
+
+
+
+.cart-info b{
+
+    font-size:18px;
+
+    color:#333;
+
+}
+
+
+
+
+
+/* JUMLAH BARANG */
+
+.qty-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:18px;
+
+}
+
+
+
+
+
+.qty-box button{
+
+    width:35px;
+
+    height:35px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#6ea8ff;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+.qty-box button:hover{
+
+    background:#5d8ef7;
+
+}
+
+
+
+
+
+.qty-box span{
+
+    font-weight:bold;
+
+    font-size:18px;
+
+}
+
+
+
+
+
+/* CHECKOUT BAWAH */
+
+.checkout-bar{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 50px;
+
+    box-shadow:
+
+    0 -5px 20px rgba(0,0,0,.1);
+
+    z-index:100;
+
+}
+
+
+
+
+
+.checkout-bar p{
+
+    margin:0;
+
+    color:#666;
+
+}
+
+
+
+
+
+.checkout-bar h2{
+
+    margin:5px 0 0;
+
+    color:#333;
+
+}
+
+
+
+
+
+.checkout-bar button{
+
+    background:#5d8ef7;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 45px;
+
+    border-radius:15px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+.checkout-bar button:hover{
+
+    background:#477ee8;
+
+}
+
+
+
+
+
+/* KOSONG */
+
+.empty-cart{
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+
+    .cart-page{
+
+        padding:20px;
+
+    }
+
+
+
+    .cart-card{
+
+        gap:12px;
+
+    }
+
+
+
+    .cart-card img{
+
+        width:90px;
+
+        height:90px;
+
+    }
+
+
+
+    .checkout-bar{
+
+        padding:15px 20px;
+
+    }
+
+
+
+    .checkout-bar button{
+
+        padding:12px 25px;
+
+    }
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+    .cart-card{
+
+        align-items:flex-start;
+
+    }
+
+
+
+    .cart-info h3{
+
+        font-size:16px;
+
+    }
+
+
+
+    .cart-info p{
+
+        font-size:14px;
+
+    }
+
+
+
+    .checkout-bar h2{
+
+        font-size:18px;
+
+    }
+
 
 }
