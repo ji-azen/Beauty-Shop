@@ -1,29 +1,23 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "../customer/Home/Home";
-import Product from "../customer/Product/Product";
-import Cart from "../customer/Cart/Cart";
-import Wishlist from "../customer/Wishlist/Wishlist";
-import Profile from "../customer/Profile/Profile";
 
-function AppRouter() {
-  return (
-    <BrowserRouter>
-      <Routes>
+function AppRouter(){
 
-        <Route path="/" element={<Home />} />
+    return(
 
-        <Route path="/products" element={<Product />} />
+        <BrowserRouter>
 
-        <Route path="/cart" element={<Cart />} />
+            <Routes>
 
-        <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/" element={<Home />} />
 
-        <Route path="/profile" element={<Profile />} />
+            </Routes>
 
-      </Routes>
-    </BrowserRouter>
-  );
+        </BrowserRouter>
+
+    )
+
 }
 
 export default AppRouter;

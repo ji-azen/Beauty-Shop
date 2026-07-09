@@ -1,3 +1,4 @@
+import { useStore } from "../../context/useStore";
 import "./ProductCard.css";
 
 import {
@@ -7,6 +8,17 @@ import {
 } from "react-icons/fi";
 
 function ProductCard({product}) {
+    const {
+
+       addToCart,
+       toggleWishlist,
+       wishlist
+
+} = useStore();
+
+const isFavorite = wishlist.some(
+    item => item.id === product.id
+);
 
     return (
 
@@ -40,19 +52,20 @@ function ProductCard({product}) {
             </div>
 
             <div className="product-action">
-
-                <button>
-
-                    <FiHeart />
-
+                <button
+                    onClick={() => toggleWishlist(product)}
+                >
+                    <FiHeart
+                    color={isFavorite ? "red" : ""}
+                />
                 </button>
 
-                <button className="cart-btn">
-
+                <button
+                    className="cart-btn"
+                    onClick={() => addToCart(product)}
+                >
                     <FiShoppingCart />
-
                     Tambah
-
                 </button>
 
             </div>
