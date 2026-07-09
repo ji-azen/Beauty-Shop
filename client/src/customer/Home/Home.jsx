@@ -1,30 +1,57 @@
+import ProductCard from "../../components/ProductCard/ProductCard";
 import Navbar from "../../components/Navbar/Navbar";
-import ProductGrid from "../../components/ProductGrid/ProductGrid";
 
-function Home(){
+import "./Home.css";
 
-    return(
+function Home() {
+    return (
 
         <>
 
-            <Navbar/>
+            <Navbar />
 
-            <div
-                style={{
-                    maxWidth:"1300px",
-                    margin:"40px auto",
-                    padding:"20px"
-                }}
-            >
+            <main className="home">
 
-                <ProductGrid/>
+                <div className="top-bar">
 
-            </div>
+                    <h2>Semua Produk</h2>
+
+                    <select>
+
+                        <option>Urutkan</option>
+
+                        <option>Terbaru</option>
+
+                        <option>Harga Terendah</option>
+
+                        <option>Harga Tertinggi</option>
+
+                        <option>Terlaris</option>
+
+                        <option>Rating Tertinggi</option>
+
+                    </select>
+
+                </div>
+
+                <div className="product-grid">
+
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+                    <ProductCard />
+
+                </div>
+                
+            </main>
 
         </>
 
-    )
-
+    );
 }
 
 export default Home;

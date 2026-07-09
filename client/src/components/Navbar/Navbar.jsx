@@ -1,4 +1,7 @@
+import { useState } from "react";
 import "./Navbar.css";
+
+import Sidebar from "../Sidebar/Sidebar";
 
 import { Link } from "react-router-dom";
 
@@ -7,55 +10,69 @@ import {
     FiHeart,
     FiShoppingCart,
     FiUser,
-    FiMenu
+    FiMenu,
 } from "react-icons/fi";
 
 function Navbar() {
 
+    const [openSidebar, setOpenSidebar] = useState(false);
+
     return (
 
-        <nav className="navbar">
+        <>
 
-            <div className="logo">
-                🩵 Beauty Store
-            </div>
+            <nav className="navbar">
 
-            <div className="search-box">
+                <div className="logo">
+                    🩵 Beauty Store
+                </div>
 
-                <FiSearch />
+                <div className="search-box">
 
-                <input
-                    type="text"
-                    placeholder="Cari skincare, makeup..."
-                />
+                    <FiSearch />
 
-            </div>
+                    <input
+                        type="text"
+                        placeholder="Cari skincare, makeup..."
+                    />
 
-            <div className="menu-right">
+                </div>
 
-                <button className="filter-btn">
+                <div className="menu-right">
 
-                    <FiMenu />
+                    <button
+                        className="filter-btn"
+                        onClick={() => setOpenSidebar(true)}
+                    >
 
-                    Filter
+                        <FiMenu />
 
-                </button>
+                        Filter
 
-                <Link to="/wishlist">
-                    <FiHeart />
-                </Link>
+                    </button>
 
-                <Link to="/cart">
-                    <FiShoppingCart />
-                </Link>
+                    <Link to="/wishlist">
+                        <FiHeart />
+                    </Link>
 
-                <Link to="/profile">
-                    <FiUser />
-                </Link>
+                    <Link to="/cart">
+                        <FiShoppingCart />
+                    </Link>
 
-            </div>
+                    <Link to="/profile">
+                        <FiUser />
+                    </Link>
 
-        </nav>
+                </div>
+
+            </nav>
+
+            <Sidebar
+                open={openSidebar}
+                onClose={() => setOpenSidebar(false)}
+            />
+
+        </>
 
     );
 

@@ -1,30 +1,67 @@
 import "./ProductCard.css";
 
-function ProductCard(){
+import {
+    FiHeart,
+    FiShoppingCart,
+    FiStar
+} from "react-icons/fi";
 
-    return(
+function ProductCard() {
+
+    return (
 
         <div className="product-card">
 
             <div className="product-image">
 
-                Gambar
+                <img
+                    src="https://placehold.co/300x300"
+                    alt="produk"
+                />
 
             </div>
 
-            <h3>Wardah Lightening Serum</h3>
+            <div className="product-info">
 
-            <p>Rp45.000</p>
+                <h3>Somethinc</h3>
 
-            <button>
+                <p>Niacinamide Serum</p>
 
-                Tambah ke Keranjang
+                <div className="rating">
 
-            </button>
+                    <FiStar />
+
+                    <span>4.9</span>
+
+                    <small>(2.341)</small>
+
+                </div>
+
+                <h2>Rp89.000</h2>
+
+            </div>
+
+            <div className="product-action">
+
+                <button>
+
+                    <FiHeart />
+
+                </button>
+
+                <button className="cart-btn">
+
+                    <FiShoppingCart />
+
+                    Tambah
+
+                </button>
+
+            </div>
 
         </div>
 
-    )
+    );
 
 }
 
