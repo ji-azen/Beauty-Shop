@@ -1,0 +1,12 @@
+@import "./variables.css";
+@import "./reset.css";
+@import "./animation.css";
+
+.container {
+  width: min(1280px, 92%);
+  margin: auto;
+}
+
+body {
+  overflow-x: hidden;
+}
