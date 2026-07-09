@@ -1,113 +1,96 @@
 .product-card{
-
     background:white;
-
     border-radius:22px;
-
     overflow:hidden;
-
     box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-    transition:.3s;
-
+    transition:.35s;
+    display:flex;
+    flex-direction:column;
 }
 
 .product-card:hover{
-
     transform:translateY(-8px);
-
-    box-shadow:0 20px 45px rgba(0,0,0,.15);
-
+    box-shadow:0 20px 45px rgba(88,169,255,.22);
 }
 
 .product-image{
-
-    height:260px;
-
-    background:#f7faff;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
+    width:100%;
+    height:250px;
+    overflow:hidden;
+    background:#f4f8ff;
 }
 
 .product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.5s;
+}
 
-    width:180px;
-
+.product-card:hover img{
+    transform:scale(1.07);
 }
 
 .product-info{
-
-    padding:20px;
-
+    padding:18px;
 }
 
 .product-info h3{
-
-    color:#4a7ce8;
-
+    color:#6d8bc4;
+    font-size:14px;
+    margin-bottom:5px;
 }
 
 .product-info p{
-
-    margin:8px 0;
-
-    color:#666;
-
+    font-weight:600;
+    margin-bottom:12px;
+    min-height:45px;
 }
 
 .rating{
-
     display:flex;
-
     align-items:center;
-
-    gap:6px;
-
-    margin:10px 0;
-
-    color:goldenrod;
-
+    gap:5px;
+    color:#ffb400;
+    margin-bottom:12px;
 }
 
 .product-info h2{
-
-    color:#222;
-
-    margin-top:12px;
-
+    color:#4c8cff;
+    font-size:24px;
 }
 
 .product-action{
-
     display:flex;
-
-    justify-content:space-between;
-
-    padding:20px;
-
+    gap:10px;
+    padding:18px;
+    margin-top:auto;
 }
 
 .product-action button{
-
     border:none;
-
     cursor:pointer;
-
     border-radius:12px;
+    transition:.3s;
+}
 
-    padding:12px 18px;
-
+.product-action button:first-child{
+    width:50px;
+    background:#eef6ff;
 }
 
 .cart-btn{
-
-    background:#6ca8ff;
-
+    flex:1;
+    background:#7bb8ff;
     color:white;
+    padding:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+}
 
+.cart-btn:hover{
+    background:#5ca7ff;
 }

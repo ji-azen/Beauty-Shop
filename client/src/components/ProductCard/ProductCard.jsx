@@ -6,39 +6,37 @@ import {
     FiStar
 } from "react-icons/fi";
 
-function ProductCard() {
+function ProductCard({product}) {
 
     return (
 
         <div className="product-card">
 
             <div className="product-image">
-
                 <img
-                    src="https://placehold.co/300x300"
-                    alt="produk"
+                    src={product.image}
+                    alt={product.name}
                 />
-
             </div>
 
             <div className="product-info">
 
-                <h3>Somethinc</h3>
+                <h3>{product.brand}</h3>
 
-                <p>Niacinamide Serum</p>
+                <p>{product.name}</p>
 
                 <div className="rating">
 
                     <FiStar />
 
-                    <span>4.9</span>
+                    <span>{product.rating}</span>
 
-                    <small>(2.341)</small>
+                    <small>({product.review})</small>
 
-                </div>
-
-                <h2>Rp89.000</h2>
-
+            </div>
+                <h2>
+                Rp {product.price.toLocaleString("id-ID")}
+                </h2>
             </div>
 
             <div className="product-action">
