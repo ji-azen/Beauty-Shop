@@ -1,5 +1,4 @@
 const products = [
-
     {
         id: 1,
         brand: "Wardah",
@@ -87,7 +86,6 @@ const products = [
         category: "Bodycare",
         image: "https://placehold.co/300x300?text=Scarlett"
     }
-
 ];
 
 export default products;

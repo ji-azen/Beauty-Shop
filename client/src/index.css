@@ -9,50 +9,27 @@ body {
 }
 
 .toast{
-
     position:fixed;
-
     top:90px;
-
     right:30px;
-
     background:#5d8ef7;
-
     color:white;
-
     padding:15px 25px;
-
     border-radius:15px;
-
     z-index:9999;
-
     font-weight:bold;
-
     box-shadow:
     0 10px 30px rgba(0,0,0,.15);
-
     animation:toast .3s ease;
-
 }
 
-
 @keyframes toast{
-
     from{
-
         opacity:0;
-
         transform:translateY(-20px);
-
     }
-
-
     to{
-
         opacity:1;
-
         transform:translateY(0);
-
     }
-
 }

@@ -1,131 +1,67 @@
 .overlay{
     position:fixed;
     inset:0;
-
     background:rgba(0,0,0,.35);
     backdrop-filter:blur(4px);
-
     z-index:998;
 }
 
-
 .sidebar{
-
     position:fixed;
-
     top:0;
-
     right:-320px;
-
     width:300px;
-
     height:100vh;
-
     background:white;
-
     z-index:1000;
-
     padding:25px;
-
     transition:.3s;
-
     box-shadow:-5px 0 20px rgba(0,0,0,.1);
-
 }
-
-
 
 .sidebar.active{
-
     right:0;
-
 }
-
-
 
 .sidebar-overlay{
-
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.35);
-
     z-index:999;
-
 }
-
-
-
 
 .sidebar-header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin-bottom:30px;
-
 }
-
-
 
 .sidebar-header button{
-
     border:none;
-
     background:none;
-
     font-size:25px;
-
     cursor:pointer;
-
 }
-
-
-
-
 
 .filter-list{
-
     display:flex;
-
     flex-direction:column;
-
     gap:15px;
-
 }
-
-
 
 .filter-list button{
-
     padding:15px;
-
     border:none;
-
     border-radius:12px;
-
     background:#f3f5fb;
-
     cursor:pointer;
-
     text-align:left;
-
     font-size:16px;
-
 }
 
-
-
 .filter-list button:hover,
-
 .active-filter{
-
     background:#5d8ef7 !important;
-
     color:white;
-
 }

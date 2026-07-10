@@ -1,114 +1,58 @@
 .profile-page{
-
     min-height:100vh;
-
     background:#f7f8fc;
-
     padding:40px 8%;
-
 }
-
-
 
 .profile-card,
 .order-history{
-
     background:white;
-
     padding:30px;
-
     border-radius:20px;
-
     box-shadow:
     0 10px 25px rgba(0,0,0,.08);
-
     margin-bottom:25px;
-
 }
-
-
 
 .profile-card h1,
 .order-history h2{
-
     margin-bottom:25px;
-
     color:#333;
-
 }
-
-
-
 
 .profile-row{
-
     display:flex;
-
     justify-content:space-between;
-
     padding:15px 0;
-
     border-bottom:1px solid #eee;
-
 }
-
-
 
 .profile-row span{
-
     color:#777;
-
 }
-
-
-
-
 
 .profile-order{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     padding:20px 0;
-
     border-bottom:1px solid #eee;
-
 }
-
-
 
 .profile-order p{
-
     margin-top:5px;
-
     color:#777;
-
 }
-
-
 
 .profile-order strong{
-
     color:#5d8ef7;
-
 }
 
-
-
 @media(max-width:700px){
-
     .profile-row,
     .profile-order{
-
         flex-direction:column;
-
         gap:10px;
-
         align-items:flex-start;
-
     }
-
 }

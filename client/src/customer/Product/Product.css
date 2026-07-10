@@ -74,19 +74,15 @@
 }
 
 @media(max-width:900px){
-
     .product-page{
         flex-direction:column;
         padding:20px;
     }
-
     .filter-box{
         flex-direction:column;
     }
-
     .search-input,
     .category-select{
         width:100%;
     }
-
 }
