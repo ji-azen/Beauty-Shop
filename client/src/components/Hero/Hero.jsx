@@ -3,9 +3,7 @@ import "./Hero.css";
 function Hero(){
 
     return (
-
         <section className="hero">
-
             <div className="hero-text">
 
                 <h1>
@@ -20,14 +18,9 @@ function Hero(){
                 <button>
                     Belanja Sekarang
                 </button>
-
             </div>
-
-
         </section>
-
     );
-
 }
 
 export default Hero;
