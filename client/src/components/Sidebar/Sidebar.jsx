@@ -1,37 +1,43 @@
+import { FiX } from "react-icons/fi";
+
+import { useStore } from "../../context/StoreContext";
+
 import "./Sidebar.css";
+
 
 
 function Sidebar({
 
     open,
 
-    onClose,
-
-    category,
-
-    setCategory
+    onClose
 
 }){
 
 
+    const {
 
-    const changeCategory=(value)=>{
+        category,
 
+        setCategory
 
-        if(category===value){
-
-            setCategory("");
-
-        }
-
-        else{
-
-            setCategory(value);
-
-        }
+    } = useStore();
 
 
-    };
+
+
+
+    function chooseCategory(value){
+
+
+        setCategory(value);
+
+
+        onClose();
+
+
+    }
+
 
 
 
@@ -39,22 +45,23 @@ function Sidebar({
 
     return(
 
+
         <>
 
 
         {
 
-            open &&
-
-            (
+            open && (
 
                 <div
 
-                    className="overlay"
+                    className="sidebar-overlay"
 
                     onClick={onClose}
 
-                />
+                >
+
+                </div>
 
             )
 
@@ -64,104 +71,193 @@ function Sidebar({
 
 
 
+
+
         <aside
 
-            className={`sidebar ${open ? "active":""}`}
+            className={
+
+                open
+
+                ?
+
+                "sidebar active"
+
+                :
+
+                "sidebar"
+
+            }
 
         >
 
 
-            <h2>
-                Filter Produk
-            </h2>
+
+
+
+            <div className="sidebar-header">
+
+
+                <h2>
+
+                    Filter Produk
+
+                </h2>
+
+
+
+                <button
+
+                    onClick={onClose}
+
+                >
+
+                    <FiX />
+
+                </button>
+
+
+            </div>
 
 
 
 
 
-            <div className="filter-group">
-
-
-                <h4>
-                    Kategori
-                </h4>
 
 
 
-                <label>
+            <div className="filter-list">
 
-                    <input
 
-                        type="checkbox"
 
-                        checked={
-                            category==="Skincare"
-                        }
+                <button
 
-                        onChange={()=>
-                            changeCategory("Skincare")
-                        }
+                    className={
 
-                    />
+                        category==="Semua"
+
+                        ?
+
+                        "active-filter"
+
+                        :
+
+                        ""
+
+                    }
+
+                    onClick={()=>chooseCategory("Semua")}
+
+                >
+
+                    Semua Produk
+
+                </button>
+
+
+
+
+
+
+
+                <button
+
+                    className={
+
+                        category==="Skincare"
+
+                        ?
+
+                        "active-filter"
+
+                        :
+
+                        ""
+
+                    }
+
+                    onClick={()=>chooseCategory("Skincare")}
+
+                >
 
                     Skincare
 
-                </label>
+                </button>
 
 
 
 
 
-                <label>
 
-                    <input
 
-                        type="checkbox"
+                <button
 
-                        checked={
-                            category==="Makeup"
-                        }
+                    className={
 
-                        onChange={()=>
-                            changeCategory("Makeup")
-                        }
+                        category==="Makeup"
 
-                    />
+                        ?
+
+                        "active-filter"
+
+                        :
+
+                        ""
+
+                    }
+
+                    onClick={()=>chooseCategory("Makeup")}
+
+                >
 
                     Makeup
 
-                </label>
+                </button>
 
 
 
 
 
-                <label>
 
-                    <input
 
-                        type="checkbox"
 
-                        checked={
-                            category==="Bodycare"
-                        }
+                <button
 
-                        onChange={()=>
-                            changeCategory("Bodycare")
-                        }
+                    className={
 
-                    />
+                        category==="Bodycare"
+
+                        ?
+
+                        "active-filter"
+
+                        :
+
+                        ""
+
+                    }
+
+                    onClick={()=>chooseCategory("Bodycare")}
+
+                >
 
                     Bodycare
 
-                </label>
+                </button>
 
 
 
             </div>
 
 
+
+
+
+
         </aside>
+
+
+
 
 
         </>
@@ -169,7 +265,9 @@ function Sidebar({
 
     );
 
+
 }
+
 
 
 export default Sidebar;

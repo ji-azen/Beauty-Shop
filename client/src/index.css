@@ -16,7 +16,7 @@ body {
 
     right:30px;
 
-    background:#6ea8ff;
+    background:#5d8ef7;
 
     color:white;
 
@@ -24,8 +24,35 @@ body {
 
     border-radius:15px;
 
-    z-index:999;
+    z-index:9999;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    font-weight:bold;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+    animation:toast .3s ease;
+
+}
+
+
+@keyframes toast{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-20px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
 
 }

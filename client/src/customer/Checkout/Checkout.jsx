@@ -1,124 +1,78 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar/Navbar";
-
 import { useStore } from "../../context/StoreContext";
 
 import "./Checkout.css";
 
 
-
 function Checkout(){
-
 
     const navigate = useNavigate();
 
 
-
-
     const {
-
         checkoutItems,
-
         setOrders,
-
-        removeMultipleFromCart
-
+        setCheckoutItems,
+        removeCheckoutItems,
+        showMessage
     } = useStore();
 
 
 
-
-
-
-
     const [address,setAddress] = useState("");
-
-    const [payment,setPayment] = useState("");
-
-
-
-
+    const [bank,setBank] = useState("");
 
 
 
     const total = checkoutItems.reduce(
-
-
-        (sum,item)=>
-
-
-        sum + (item.price * item.qty),
-
-
+        (sum,item)=>sum + (item.price * item.qty),
         0
-
-
     );
 
 
 
 
+    function createOrder(){
 
 
-
-
-
-    const createOrder = ()=>{
-
-
-
-        if(!address || !payment){
-
+        if(
+            !address ||
+            !bank
+        ){
 
             alert(
-                "Lengkapi alamat dan pembayaran dulu"
+                "Lengkapi alamat dan pilih bank dulu"
             );
 
-
             return;
-
 
         }
 
 
 
 
-
-
-
         const order = {
 
-
-            id:crypto.randomUUID(),
-
+            id:"BS-"+new Date().getTime(),
 
             items:checkoutItems,
 
+            address,
 
-            address:address,
+            payment:"Transfer Bank",
 
+            bank,
 
-            payment:payment,
-
-
-            total:total,
-
+            total,
 
             status:"Menunggu Pembayaran",
 
-
-            date:new Date()
-
-            .toLocaleString("id-ID")
-
+            date:new Date().toLocaleString("id-ID")
 
         };
-
-
-
 
 
 
@@ -135,48 +89,31 @@ function Checkout(){
 
 
 
+        removeCheckoutItems(checkoutItems);
 
 
 
-        removeMultipleFromCart(
+        setCheckoutItems([]);
 
 
-            checkoutItems.map(
-
-                item=>item.id
-
-            )
 
 
+        showMessage(
+            "🎉 Pesanan berhasil dibuat!"
         );
-
-
-
-
 
 
 
 
         setTimeout(()=>{
 
+            navigate("/orders");
 
-            alert(
-                "Pesanan berhasil dibuat 🎉"
-            );
-
-
-
-            navigate("/profile");
+        },1500);
 
 
 
-        },200);
-
-
-
-    };
-
-
+    }
 
 
 
@@ -185,7 +122,6 @@ function Checkout(){
 
     return(
 
-
         <>
 
 
@@ -193,25 +129,12 @@ function Checkout(){
 
 
 
-
-
-
-        <div className="checkout-page">
-
-
-
-
+        <main className="checkout-page">
 
 
             <h1>
-
-                Checkout 🛍️
-
+                Checkout
             </h1>
-
-
-
-
 
 
 
@@ -223,158 +146,93 @@ function Checkout(){
 
 
 
-
-
-                <div className="checkout-products">
-
-
-
+                <section className="checkout-products">
 
 
                     <h2>
-
                         Produk Pesanan
-
                     </h2>
-
-
 
 
 
 
 
                     {
-
-
-                        checkoutItems.length === 0 ?
-
-
-
-                        (
+                        checkoutItems.length === 0 ? (
 
                             <p>
-
                                 Tidak ada produk dipilih
-
                             </p>
-
 
                         )
 
-
-
                         :
 
+                        checkoutItems.map(item=>(
 
 
-                        (
+                            <div
+
+                                className="checkout-item"
+
+                                key={item.id}
+
+                            >
 
 
-                            checkoutItems.map(item=>(
+                                <img
 
+                                    src={item.image}
 
+                                    alt={item.name}
 
-                                <div
-
-                                    className="checkout-item"
-
-                                    key={item.id}
-
-                                >
-
-
-
-
-
-
-                                    <img
-
-                                        src={item.image}
-
-                                        alt={item.name}
-
-                                    />
+                                />
 
 
 
+                                <div>
 
 
+                                    <h3>
+
+                                        {item.brand}
+
+                                    </h3>
 
 
-                                    <div>
+                                    <p>
+
+                                        {item.name}
+
+                                    </p>
 
 
-                                        <h3>
+                                    <p>
 
-                                            {item.brand}
+                                        Qty: {item.qty}
 
-                                        </h3>
-
-
-
-                                        <p>
-
-                                            {item.name}
-
-                                        </p>
+                                    </p>
 
 
+                                    <b>
 
+                                        Rp {(item.price * item.qty).toLocaleString("id-ID")}
 
-                                        <p>
-
-                                            Jumlah:
-
-                                            {" "}
-
-                                            {item.qty}
-
-                                        </p>
-
-
-
-
-
-                                        <b>
-
-                                            Rp {(item.price * item.qty)
-
-                                            .toLocaleString("id-ID")}
-
-                                        </b>
-
-
-
-                                    </div>
-
-
-
-
-
+                                    </b>
 
 
                                 </div>
 
 
-
-                            ))
-
+                            </div>
 
 
-                        )
-
-
+                        ))
 
                     }
 
 
-
-
-
-
-
-                </div>
-
+                </section>
 
 
 
@@ -384,46 +242,27 @@ function Checkout(){
 
 
 
-
-
-                <div className="checkout-form">
-
-
-
-
+                <section className="checkout-form">
 
 
 
                     <h2>
-
                         Alamat Pengiriman
-
                     </h2>
-
-
-
-
-
 
 
 
                     <textarea
 
-
                         placeholder="Masukkan alamat lengkap..."
-
 
                         value={address}
 
+                        onChange={(e)=>
 
-                        onChange={
-
-                            e=>setAddress(
-                                e.target.value
-                            )
+                            setAddress(e.target.value)
 
                         }
-
 
                     />
 
@@ -433,91 +272,140 @@ function Checkout(){
 
 
 
-
-
                     <h2>
-
-                        Metode Pembayaran
-
+                        Pembayaran
                     </h2>
 
 
 
 
+                    <div className="payment-box">
+
+
+                        <h3>
+                            Transfer Bank
+                        </h3>
+
+
+                        <p>
+                            Pilih rekening pembayaran
+                        </p>
 
 
 
 
-                    <label>
+
+                        <label>
 
 
-                        <input
+                            <input
+
+                                type="radio"
+
+                                name="bank"
+
+                                onChange={()=>setBank("BCA")}
+
+                            />
 
 
-                            type="radio"
+                            DANA
 
 
-                            name="payment"
-
-
-                            value="COD"
-
-
-                            onChange={
-
-                                e=>setPayment(
-                                    e.target.value
-                                )
-
-                            }
-
-
-                        />
-
-
-                        COD
-
-
-                    </label>
-
-
+                        </label>
 
 
 
 
 
 
-                    <label>
+                        <label>
 
 
-                        <input
+                            <input
+
+                                type="radio"
+
+                                name="bank"
+
+                                onChange={()=>setBank("BRI")}
+
+                            />
 
 
-                            type="radio"
+                            OVO
 
 
-                            name="payment"
+                        </label>
 
 
-                            value="Transfer Bank"
+                        <label>
 
 
-                            onChange={
+                            <input
 
-                                e=>setPayment(
-                                    e.target.value
-                                )
+                                type="radio"
 
-                            }
+                                name="bank"
 
+                                onChange={()=>setBank("BRI")}
 
-                        />
-
-
-                        Transfer Bank
+                            />
 
 
-                    </label>
+                            ShopeePay
+
+
+                        </label>
+
+
+
+                        <label>
+
+
+                            <input
+
+                                type="radio"
+
+                                name="bank"
+
+                                onChange={()=>setBank("Mandiri")}
+
+                            />
+
+
+                            Mandiri
+
+
+                        </label>
+
+
+
+
+
+
+                        <label>
+
+
+                            <input
+
+                                type="radio"
+
+                                name="bank"
+
+                                onChange={()=>setBank("BNI")}
+
+                            />
+
+
+                            BRI
+
+
+                        </label>
+
+
+
+                    </div>
 
 
 
@@ -530,13 +418,11 @@ function Checkout(){
                     <div className="checkout-total">
 
 
-
                         <span>
 
                             Total:
 
                         </span>
-
 
 
                         <b>
@@ -546,10 +432,7 @@ function Checkout(){
                         </b>
 
 
-
                     </div>
-
-
 
 
 
@@ -565,19 +448,12 @@ function Checkout(){
 
                         Buat Pesanan
 
+
                     </button>
 
 
 
-
-
-
-
-                </div>
-
-
-
-
+                </section>
 
 
 
@@ -587,24 +463,16 @@ function Checkout(){
 
 
 
-
-
-
-        </div>
-
-
-
+        </main>
 
 
 
         </>
 
-
     );
 
 
 }
-
 
 
 export default Checkout;

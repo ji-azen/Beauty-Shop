@@ -1,43 +1,62 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { 
+    useState 
+} from "react";
 
-import {
-    FiHeart,
-    FiShoppingCart,
-    FiMinus,
-    FiPlus
-} from "react-icons/fi";
+
+import { 
+    useParams,
+    useNavigate
+} from "react-router-dom";
+
 
 import Navbar from "../../components/Navbar/Navbar";
 
 import products from "../../data/products";
 
-import { useStore } from "../../context/StoreContext";
+import { 
+    useStore 
+} from "../../context/StoreContext";
+
 
 import "./ProductDetail.css";
 
 
+
 function ProductDetail(){
 
-    const { id } = useParams();
+
+    const {
+
+        id
+
+    } = useParams();
+
+
 
     const navigate = useNavigate();
 
 
+
     const {
+
         addToCart,
+
         toggleWishlist,
-        wishlist,
-        setCheckoutItems
+
+        setCheckoutItems,
+
     } = useStore();
+
 
 
 
     const product = products.find(
 
-        item => item.id === Number(id)
+        item=>item.id === Number(id)
 
     );
+
+
 
 
 
@@ -45,21 +64,23 @@ function ProductDetail(){
 
 
 
+
+
+
+
     if(!product){
 
-        return (
 
-            <>
+        return(
 
-                <Navbar />
+            <h2>
 
-                <h2>
-                    Produk tidak ditemukan
-                </h2>
+                Produk tidak ditemukan
 
-            </>
+            </h2>
 
         );
+
 
     }
 
@@ -67,17 +88,11 @@ function ProductDetail(){
 
 
 
-    const isWishlist = wishlist.some(
-
-        item => item.id === product.id
-
-    );
 
 
 
+    function handleCart(){
 
-
-    const handleAddCart = ()=>{
 
 
         for(let i=0;i<qty;i++){
@@ -87,13 +102,17 @@ function ProductDetail(){
         }
 
 
-    };
+
+    }
 
 
 
 
 
-    const buyNow = ()=>{
+
+
+
+    function buyNow(){
 
 
         setCheckoutItems([
@@ -109,10 +128,14 @@ function ProductDetail(){
         ]);
 
 
+
         navigate("/checkout");
 
 
-    };
+    }
+
+
+
 
 
 
@@ -121,12 +144,20 @@ function ProductDetail(){
 
     return(
 
+
         <>
+
 
         <Navbar />
 
 
+
+
+
         <main className="detail-page">
+
+
+
 
 
             <div className="detail-image">
@@ -147,7 +178,14 @@ function ProductDetail(){
 
 
 
+
+
+
+
             <div className="detail-info">
+
+
+
 
 
                 <p className="brand">
@@ -155,6 +193,9 @@ function ProductDetail(){
                     {product.brand}
 
                 </p>
+
+
+
 
 
                 <h1>
@@ -166,7 +207,11 @@ function ProductDetail(){
 
 
 
+
+
+
                 <div className="rating">
+
 
                     ⭐ {product.rating}
 
@@ -176,7 +221,12 @@ function ProductDetail(){
 
                     </span>
 
+
                 </div>
+
+
+
+
 
 
 
@@ -192,7 +242,12 @@ function ProductDetail(){
 
 
 
+
+
+
+
                 <p className="description">
+
 
                     Produk original 100%.
 
@@ -200,17 +255,28 @@ function ProductDetail(){
 
                     Cocok untuk berbagai jenis kulit.
 
-                </p>
-
-
-
-
-
-                <p className="stock">
-
-                    Stok tersedia: 100
+                    
 
                 </p>
+
+
+
+
+
+
+
+
+
+                <div className="stock">
+
+
+                    Stok tersedia: <b>99</b>
+
+
+                </div>
+
+
+
 
 
 
@@ -220,32 +286,40 @@ function ProductDetail(){
                 <div className="quantity">
 
 
+
+                    <span>
+
+                        Jumlah
+
+                    </span>
+
+
+
+
                     <button
 
                         onClick={()=>{
 
-                            if(qty>1){
+                            if(qty>1)
 
-                                setQty(qty-1);
-
-                            }
+                            setQty(qty-1)
 
                         }}
 
                     >
 
-                        <FiMinus />
+                        -
 
                     </button>
 
 
 
 
-                    <span>
+                    <b>
 
                         {qty}
 
-                    </span>
+                    </b>
 
 
 
@@ -256,9 +330,11 @@ function ProductDetail(){
 
                     >
 
-                        <FiPlus />
+                        +
 
                     </button>
+
+
 
 
                 </div>
@@ -270,77 +346,90 @@ function ProductDetail(){
 
 
 
-                <div className="action">
+
+                <div className="delivery">
+
+
+                    🚚 Gratis ongkir
+
+
+                    <br/>
+
+
+                    📦 Estimasi 1-3 hari
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <div className="detail-btn">
+
+
+
 
 
                     <button
 
-                        className="wishlist"
+                        onClick={handleCart}
+
+                    >
+
+                        🛒 Keranjang
+
+                    </button>
+
+
+
+
+
+
+
+
+                    <button
+
+                        className="buy-btn"
+
+                        onClick={buyNow}
+
+                    >
+
+                        ⚡ Beli Sekarang
+
+                    </button>
+
+
+
+
+
+
+
+                    <button
+
+                        className="wishlist-btn"
 
                         onClick={()=>toggleWishlist(product)}
 
                     >
 
-                        <FiHeart
-
-                            fill={
-
-                                isWishlist
-
-                                ?
-
-                                "red"
-
-                                :
-
-                                "none"
-
-                            }
-
-                        />
-
-                        Wishlist
+                        ❤️
 
                     </button>
 
 
 
 
-
-
-                    <button
-
-                        className="cart"
-
-                        onClick={handleAddCart}
-
-                    >
-
-                        <FiShoppingCart />
-
-                        Keranjang
-
-                    </button>
 
 
                 </div>
 
 
-
-
-
-
-                <button
-
-                    className="buy"
-
-                    onClick={buyNow}
-
-                >
-
-                    Beli Sekarang
-
-                </button>
 
 
 
@@ -349,14 +438,22 @@ function ProductDetail(){
             </div>
 
 
+
+
+
+
+
         </main>
+
 
 
         </>
 
+
     );
 
 }
+
 
 
 export default ProductDetail;

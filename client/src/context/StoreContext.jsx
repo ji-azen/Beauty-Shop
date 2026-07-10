@@ -14,10 +14,11 @@ function getStorage(key){
 
     const data = localStorage.getItem(key);
 
-    return data ? JSON.parse(data) : [];
+    return data
+        ? JSON.parse(data)
+        : [];
 
 }
-
 
 
 
@@ -26,30 +27,48 @@ export function StoreProvider({children}){
 
 
     const [cart,setCart] = useState(
-
-        () => getStorage("cart")
-
+        ()=>getStorage("cart")
     );
-
 
 
     const [wishlist,setWishlist] = useState(
-
-        () => getStorage("wishlist")
-
+        ()=>getStorage("wishlist")
     );
-
 
 
     const [orders,setOrders] = useState(
-
-        () => getStorage("orders")
-
+        ()=>getStorage("orders")
     );
 
 
-
     const [checkoutItems,setCheckoutItems] = useState([]);
+
+
+    const [message,setMessage] = useState("");
+
+
+
+    const [search,setSearch] = useState("");
+
+    const [category,setCategory] = useState("Semua");
+
+
+
+
+
+
+    function showMessage(text){
+
+        setMessage(text);
+
+
+        setTimeout(()=>{
+
+            setMessage("");
+
+        },3000);
+
+    }
 
 
 
@@ -59,15 +78,10 @@ export function StoreProvider({children}){
 
     useEffect(()=>{
 
-
         localStorage.setItem(
-
             "cart",
-
             JSON.stringify(cart)
-
         );
-
 
     },[cart]);
 
@@ -75,19 +89,12 @@ export function StoreProvider({children}){
 
 
 
-
-
     useEffect(()=>{
 
-
         localStorage.setItem(
-
             "wishlist",
-
             JSON.stringify(wishlist)
-
         );
-
 
     },[wishlist]);
 
@@ -95,19 +102,12 @@ export function StoreProvider({children}){
 
 
 
-
-
     useEffect(()=>{
 
-
         localStorage.setItem(
-
             "orders",
-
             JSON.stringify(orders)
-
         );
-
 
     },[orders]);
 
@@ -128,7 +128,7 @@ export function StoreProvider({children}){
 
             const exist = prev.find(
 
-                item=>item.id===product.id
+                item=>item.id === product.id
 
             );
 
@@ -140,7 +140,7 @@ export function StoreProvider({children}){
                 return prev.map(item=>
 
 
-                    item.id===product.id
+                    item.id === product.id
 
                     ?
 
@@ -148,10 +148,9 @@ export function StoreProvider({children}){
 
                         ...item,
 
-                        qty:item.qty+1
+                        qty:item.qty + 1
 
                     }
-
 
                     :
 
@@ -166,13 +165,9 @@ export function StoreProvider({children}){
 
 
 
-
-
             return [
 
-
                 ...prev,
-
 
                 {
 
@@ -182,12 +177,18 @@ export function StoreProvider({children}){
 
                 }
 
-
             ];
 
 
-
         });
+
+
+
+        showMessage(
+
+            `${product.name} masuk keranjang 🛒`
+
+        );
 
 
     }
@@ -208,7 +209,7 @@ export function StoreProvider({children}){
 
             const exist = prev.find(
 
-                item=>item.id===product.id
+                item=>item.id === product.id
 
             );
 
@@ -217,14 +218,29 @@ export function StoreProvider({children}){
             if(exist){
 
 
+                showMessage(
+
+                    `${product.name} dihapus dari wishlist`
+
+                );
+
+
                 return prev.filter(
 
-                    item=>item.id!==product.id
+                    item=>item.id !== product.id
 
                 );
 
 
             }
+
+
+
+            showMessage(
+
+                `${product.name} masuk wishlist 🤍`
+
+            );
 
 
 
@@ -235,7 +251,6 @@ export function StoreProvider({children}){
                 product
 
             ];
-
 
 
         });
@@ -256,12 +271,9 @@ export function StoreProvider({children}){
 
         setCart(prev=>
 
-
             prev.map(item=>
 
-
-                item.id===id
-
+                item.id === id
 
                 ?
 
@@ -269,10 +281,9 @@ export function StoreProvider({children}){
 
                     ...item,
 
-                    qty:item.qty+1
+                    qty:item.qty + 1
 
                 }
-
 
                 :
 
@@ -281,13 +292,10 @@ export function StoreProvider({children}){
 
             )
 
-
         );
 
 
     }
-
-
 
 
 
@@ -300,12 +308,9 @@ export function StoreProvider({children}){
 
         setCart(prev=>
 
-
             prev.map(item=>
 
-
-                item.id===id && item.qty>1
-
+                item.id === id && item.qty > 1
 
                 ?
 
@@ -313,10 +318,9 @@ export function StoreProvider({children}){
 
                     ...item,
 
-                    qty:item.qty-1
+                    qty:item.qty - 1
 
                 }
-
 
                 :
 
@@ -325,13 +329,10 @@ export function StoreProvider({children}){
 
             )
 
-
         );
 
 
     }
-
-
 
 
 
@@ -346,10 +347,15 @@ export function StoreProvider({children}){
 
             prev.filter(
 
-                item=>item.id!==id
+                item=>item.id !== id
 
             )
 
+        );
+
+
+        showMessage(
+            "Produk dihapus dari keranjang 🗑"
         );
 
 
@@ -361,19 +367,20 @@ export function StoreProvider({children}){
 
 
 
-
-    function removeMultipleFromCart(ids){
+    function removeCheckoutItems(items){
 
 
         setCart(prev=>
 
+            prev.filter(cartItem=>
 
-            prev.filter(
+                !items.some(
 
-                item=>!ids.includes(item.id)
+                    item=>item.id === cartItem.id
+
+                )
 
             )
-
 
         );
 
@@ -399,19 +406,27 @@ export function StoreProvider({children}){
 
                 cart,
 
-
                 wishlist,
-
 
                 orders,
 
-
                 checkoutItems,
+
+                message,
+
+
+                search,
+
+                setSearch,
+
+
+                category,
+
+                setCategory,
 
 
 
                 setOrders,
-
 
                 setCheckoutItems,
 
@@ -419,30 +434,25 @@ export function StoreProvider({children}){
 
                 addToCart,
 
-
                 toggleWishlist,
-
 
 
                 increaseQty,
 
-
                 decreaseQty,
-
-
 
                 removeFromCart,
 
+                removeCheckoutItems,
 
-                removeMultipleFromCart
 
+                showMessage
 
 
             }}
 
 
         >
-
 
             {children}
 
@@ -451,7 +461,6 @@ export function StoreProvider({children}){
 
 
     );
-
 
 
 }
@@ -464,8 +473,6 @@ export function StoreProvider({children}){
 
 export function useStore(){
 
-
     return useContext(StoreContext);
-
 
 }

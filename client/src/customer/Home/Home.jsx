@@ -1,15 +1,12 @@
-import { useState } from "react";
-
+import ProductCard from "../../components/ProductCard/ProductCard";
 
 import Navbar from "../../components/Navbar/Navbar";
 
 import Hero from "../../components/Hero/Hero";
 
-import ProductCard from "../../components/ProductCard/ProductCard";
-
-
 import products from "../../data/products";
 
+import { useStore } from "../../context/StoreContext";
 
 import "./Home.css";
 
@@ -18,89 +15,62 @@ import "./Home.css";
 function Home(){
 
 
-    const [search,setSearch]=useState("");
+    const {
 
-    const [category,setCategory]=useState("");
+        search,
 
-    const [sort,setSort]=useState("");
+        category,
 
-
-
-
+        setCategory
 
 
-    let result = products.filter(product=>{
-
-
-        const keyword = search.toLowerCase();
+    } = useStore();
 
 
 
-        return(
+
+
+
+
+    const filteredProducts = products.filter(product=>{
+
+
+        const matchSearch =
 
             product.name
             .toLowerCase()
-            .includes(keyword)
-
+            .includes(
+                search.toLowerCase()
+            )
 
             ||
 
             product.brand
             .toLowerCase()
-            .includes(keyword)
+            .includes(
+                search.toLowerCase()
+            );
 
-        );
+
+
+
+
+        const matchCategory =
+
+            category === "Semua"
+
+            ||
+
+            product.category === category;
+
+
+
+
+
+        return matchSearch && matchCategory;
 
 
     });
-
-
-
-
-
-    if(category){
-
-
-        result = result.filter(product=>
-
-            product.category===category
-
-        );
-
-
-    }
-
-
-
-
-
-
-    if(sort==="low"){
-
-
-        result.sort(
-
-            (a,b)=>a.price-b.price
-
-        );
-
-
-    }
-
-
-
-
-    if(sort==="high"){
-
-
-        result.sort(
-
-            (a,b)=>b.price-a.price
-
-        );
-
-
-    }
 
 
 
@@ -113,25 +83,10 @@ function Home(){
         <>
 
 
-        <Navbar
-
-            search={search}
-
-            setSearch={setSearch}
-
-            category={category}
-
-            setCategory={setCategory}
-
-        />
+        <Navbar />
 
 
-
-
-
-        <Hero/>
-
-
+        <Hero />
 
 
 
@@ -144,34 +99,42 @@ function Home(){
 
 
                 <h2>
+
                     Semua Produk
+
                 </h2>
 
 
 
                 <select
 
-                    value={sort}
+                    value={category}
 
-                    onChange={
-                        e=>setSort(e.target.value)
+                    onChange={(e)=>
+
+                        setCategory(e.target.value)
+
                     }
 
                 >
 
-                    <option value="">
-                        Urutkan
+                    <option>
+                        Semua
                     </option>
 
 
-                    <option value="low">
-                        Harga Terendah
+                    <option>
+                        Skincare
                     </option>
 
 
+                    <option>
+                        Makeup
+                    </option>
 
-                    <option value="high">
-                        Harga Tertinggi
+
+                    <option>
+                        Bodycare
                     </option>
 
 
@@ -185,28 +148,43 @@ function Home(){
 
 
 
-
             <div className="product-grid">
 
 
-                {
+            {
 
-                    result.map(product=>(
-
-
-                        <ProductCard
-
-                            key={product.id}
-
-                            product={product}
-
-                        />
+                filteredProducts.length === 0 ?
 
 
-                    ))
+                (
 
-                }
+                    <h3>
 
+                        Produk tidak ditemukan 😢
+
+                    </h3>
+
+                )
+
+
+                :
+
+
+                filteredProducts.map(product=>(
+
+
+                    <ProductCard
+
+                        key={product.id}
+
+                        product={product}
+
+                    />
+
+
+                ))
+
+            }
 
 
             </div>
@@ -216,12 +194,12 @@ function Home(){
         </main>
 
 
-
         </>
 
     );
 
 }
+
 
 
 export default Home;

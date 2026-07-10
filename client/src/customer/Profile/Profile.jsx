@@ -1,24 +1,30 @@
 import Navbar from "../../components/Navbar/Navbar";
 
-import { useStore } from "../../context/StoreContext";
-
 import { useAuth } from "../../context/AuthContext";
 
+import { useStore } from "../../context/StoreContext";
+
 import "./Profile.css";
+
 
 
 function Profile(){
 
 
     const {
-        orders=[]
-    } = useStore();
+
+        user
+
+    } = useAuth();
 
 
 
     const {
-        user
-    } = useAuth();
+
+        orders
+
+    } = useStore();
+
 
 
 
@@ -27,59 +33,41 @@ function Profile(){
 
         <>
 
-            <Navbar/>
+
+        <Navbar />
+
+
+
+        <main className="profile-page">
+
+
+
+            <section className="profile-card">
+
+
+                <h1>
+
+                    👤 Profil Saya
+
+                </h1>
 
 
 
 
-            <div className="profile-page">
+                <div className="profile-row">
+
+                    <span>
+
+                        Nama
+
+                    </span>
 
 
+                    <b>
 
+                        {user?.name || "-"}
 
-
-                <div className="profile-card">
-
-
-                    <h1>
-                        👤 Profil Saya
-                    </h1>
-
-
-
-                    <div className="profile-info">
-
-                        <b>
-                            Nama
-                        </b>
-
-
-                        <span>
-                            {user?.name || "Customer"}
-                        </span>
-
-
-                    </div>
-
-
-
-
-
-                    <div className="profile-info">
-
-                        <b>
-                            Email
-                        </b>
-
-
-                        <span>
-                            {user?.email || "-"}
-                        </span>
-
-
-                    </div>
-
-
+                    </b>
 
 
                 </div>
@@ -88,200 +76,119 @@ function Profile(){
 
 
 
+                <div className="profile-row">
+
+                    <span>
+
+                        Email
+
+                    </span>
+
+
+                    <b>
+
+                        {user?.email || "-"}
+
+                    </b>
+
+
+                </div>
 
 
 
 
-                <div className="order-history">
-
-
-
-                    <h2>
-                        📦 Riwayat Pesanan
-                    </h2>
+            </section>
 
 
 
 
 
 
-                    {
-                        orders.length === 0 ?
+
+            <section className="order-history">
 
 
-                        (
+                <h2>
 
-                            <div className="empty-order">
+                    📦 Pesanan Terakhir
+
+                </h2>
+
+
+
+                {
+
+                    orders.length === 0 ?
+
+
+                    (
+
+                        <p>
+
+                            Belum ada pesanan
+
+                        </p>
+
+                    )
+
+
+                    :
+
+
+                    orders.slice(0,3).map(order=>(
+
+
+                        <div
+
+                            className="profile-order"
+
+                            key={order.id}
+
+                        >
+
+
+
+                            <div>
+
+                                <b>
+
+                                    Pesanan #{order.id.slice(0,8)}
+
+                                </b>
+
 
                                 <p>
-                                    Belum ada pesanan.
+
+                                    {order.status}
+
                                 </p>
 
-
-                            </div>
-
-                        )
-
-
-                        :
-
-
-                        orders.map(order=>(
-
-
-                            <div
-
-                                className="order-card"
-
-                                key={order.id}
-
-                            >
-
-
-
-
-                                <div className="order-header">
-
-
-                                    <div>
-
-                                        <b>
-                                            {order.id}
-                                        </b>
-
-
-                                        <small>
-                                            {order.date}
-                                        </small>
-
-
-                                    </div>
-
-
-
-
-                                    <span>
-
-                                        {order.status}
-
-                                    </span>
-
-
-
-                                </div>
-
-
-
-
-
-
-
-                                {
-
-                                    order.items.map(item=>(
-
-
-                                        <div
-
-                                            className="order-item"
-
-                                            key={item.id}
-
-                                        >
-
-
-
-                                            <img
-
-                                                src={item.image}
-
-                                                alt={item.name}
-
-                                            />
-
-
-
-
-
-                                            <div>
-
-
-                                                <h4>
-
-                                                    {item.brand}
-
-                                                </h4>
-
-
-                                                <p>
-
-                                                    {item.name}
-
-                                                </p>
-
-
-                                                <span>
-
-                                                    Qty: {item.qty}
-
-                                                </span>
-
-
-                                            </div>
-
-
-
-
-                                        </div>
-
-
-                                    ))
-
-                                }
-
-
-
-
-
-
-
-
-                                <div className="order-total">
-
-
-                                    <span>
-                                        Total
-                                    </span>
-
-
-                                    <b>
-
-                                        Rp {order.total.toLocaleString("id-ID")}
-
-                                    </b>
-
-
-                                </div>
-
-
-
-
                             </div>
 
 
-                        ))
 
-                    }
+                            <strong>
 
+                                Rp {order.total.toLocaleString("id-ID")}
 
-
-                </div>
-
+                            </strong>
 
 
 
+                        </div>
 
-            </div>
+
+                    ))
+
+                }
+
+
+
+            </section>
+
+
+
+        </main>
 
 
 
@@ -289,7 +196,9 @@ function Profile(){
 
     );
 
+
 }
+
 
 
 export default Profile;

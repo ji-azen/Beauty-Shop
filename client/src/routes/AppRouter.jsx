@@ -12,6 +12,7 @@ import Wishlist from "../customer/Wishlist/Wishlist";
 import ProductDetail from "../customer/ProductDetail/ProductDetail";
 import Profile from "../customer/Profile/Profile";
 import Checkout from "../customer/Checkout/Checkout";
+import Orders from "../pages/Orders/Orders";
 
 
 // AUTH
@@ -88,6 +89,14 @@ function AppRouter(){
                     path="/checkout"
                     element={<Checkout />}
                 />
+
+
+                <Route 
+                    path="/orders" 
+                    element={<Orders/>}
+                />
+
+                
             </Routes>
 
 
