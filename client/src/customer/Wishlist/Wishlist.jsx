@@ -1,83 +1,225 @@
+import Navbar from "../../components/Navbar/Navbar";
+
+import {
+    FiShoppingCart,
+    FiCheck,
+    FiTrash2
+} from "react-icons/fi";
+
 import { useStore } from "../../context/StoreContext";
+
 import "./Wishlist.css";
 
 
 function Wishlist(){
 
+
     const {
         wishlist,
-        toggleWishlist
+        toggleWishlist,
+        addToCart,
+        cart
     } = useStore();
 
 
-    return (
-
-        <div className="wishlist-page">
-
-            <h1>
-                Wishlist 🤍
-            </h1>
 
 
-            {
-                wishlist.length === 0 ? (
+    return(
 
-                    <p>
-                        Belum ada produk favorit
-                    </p>
+        <>
 
-                ) : (
-
-                    <div className="wishlist-grid">
-
-                        {
-                            wishlist.map((item)=>(
-
-                                <div 
-                                className="wishlist-card"
-                                key={item.id}
-                                >
-
-                                    <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    />
+            <Navbar/>
 
 
-                                    <h3>
-                                        {item.brand}
-                                    </h3>
+            <div className="wishlist-page">
 
 
-                                    <p>
-                                        {item.name}
-                                    </p>
+                <h1>
+                    ❤️ Wishlist Saya
+                </h1>
 
 
-                                    <b>
-                                        Rp {item.price.toLocaleString("id-ID")}
-                                    </b>
 
 
-                                    <button
-                                    onClick={() => toggleWishlist(item)}
-                                    >
-                                        Hapus 🤍
-                                    </button>
+                {
+                    wishlist.length === 0 ?
 
 
-                                </div>
+                    (
 
-                            ))
-                        }
+                        <div className="empty-wishlist">
 
-                    </div>
+                            <h2>
+                                Wishlist masih kosong 😢
+                            </h2>
 
-                )
-            }
+                            <p>
+                                Simpan produk favorit kamu disini
+                            </p>
+
+                        </div>
+
+                    )
 
 
-        </div>
+                    :
+
+
+                    (
+
+                        <div className="wishlist-list">
+
+
+                            {
+                                wishlist.map(item=>{
+
+
+                                    const isInCart = cart.some(
+                                        product=>product.id===item.id
+                                    );
+
+
+
+                                    return(
+
+                                        <div
+                                            className="wishlist-item"
+                                            key={item.id}
+                                        >
+
+
+
+                                            <img
+
+                                                src={item.image}
+
+                                                alt={item.name}
+
+                                            />
+
+
+
+
+
+                                            <div className="wishlist-info">
+
+
+                                                <h3>
+                                                    {item.brand}
+                                                </h3>
+
+
+                                                <p>
+                                                    {item.name}
+                                                </p>
+
+
+                                                <span>
+
+                                                    ⭐ {item.rating}
+
+                                                    ({item.review})
+
+                                                </span>
+
+
+
+                                                <b>
+
+                                                    Rp {item.price.toLocaleString("id-ID")}
+
+                                                </b>
+
+
+                                            </div>
+
+
+
+
+
+
+                                            <div className="wishlist-action">
+
+
+                                                <button
+
+                                                    className={
+                                                        isInCart
+                                                        ?
+                                                        "added"
+                                                        :
+                                                        ""
+                                                    }
+
+                                                    onClick={()=>addToCart(item)}
+
+                                                >
+
+                                                    {
+                                                        isInCart
+
+                                                        ?
+
+                                                        <>
+                                                            <FiCheck/>
+                                                            Sudah di Cart
+                                                        </>
+
+
+                                                        :
+
+                                                        <>
+                                                            <FiShoppingCart/>
+                                                            Keranjang
+                                                        </>
+                                                    }
+
+
+                                                </button>
+
+
+
+
+
+                                                <button
+
+                                                    className="remove"
+
+                                                    onClick={()=>toggleWishlist(item)}
+
+                                                >
+
+                                                    <FiTrash2/>
+
+                                                    Hapus
+
+                                                </button>
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+
+                                    );
+
+
+                                })
+                            }
+
+
+                        </div>
+
+                    )
+                }
+
+
+
+            </div>
+
+        </>
 
     );
 

@@ -1,29 +1,50 @@
 import Navbar from "../../components/Navbar/Navbar";
+
 import { useStore } from "../../context/StoreContext";
+
+import { useAuth } from "../../context/AuthContext";
 
 import "./Profile.css";
 
 
 function Profile(){
 
+
     const {
-        orders = []
+        orders=[]
     } = useStore();
+
+
+
+    const {
+        user
+    } = useAuth();
+
+
 
 
     return(
 
         <>
-            <Navbar />
+
+            <Navbar/>
+
+
+
 
             <div className="profile-page">
 
 
+
+
+
                 <div className="profile-card">
+
 
                     <h1>
                         👤 Profil Saya
                     </h1>
+
 
 
                     <div className="profile-info">
@@ -32,11 +53,16 @@ function Profile(){
                             Nama
                         </b>
 
+
                         <span>
-                            Customer
+                            {user?.name || "Customer"}
                         </span>
 
+
                     </div>
+
+
+
 
 
                     <div className="profile-info">
@@ -45,11 +71,15 @@ function Profile(){
                             Email
                         </b>
 
+
                         <span>
-                            -
+                            {user?.email || "-"}
                         </span>
 
+
                     </div>
+
+
 
 
                 </div>
@@ -58,7 +88,12 @@ function Profile(){
 
 
 
+
+
+
+
                 <div className="order-history">
+
 
 
                     <h2>
@@ -66,30 +101,53 @@ function Profile(){
                     </h2>
 
 
+
+
+
+
                     {
-                        orders.length === 0 ? (
-
-                            <p>
-                                Belum ada pesanan.
-                            </p>
-
-                        ) : (
+                        orders.length === 0 ?
 
 
-                            orders.map(order=>(
+                        (
 
-                                <div
-                                    className="order-card"
-                                    key={order.id}
-                                >
+                            <div className="empty-order">
 
-
-                                    <div className="order-header">
+                                <p>
+                                    Belum ada pesanan.
+                                </p>
 
 
-                                        <span>
-                                            {order.status}
-                                        </span>
+                            </div>
+
+                        )
+
+
+                        :
+
+
+                        orders.map(order=>(
+
+
+                            <div
+
+                                className="order-card"
+
+                                key={order.id}
+
+                            >
+
+
+
+
+                                <div className="order-header">
+
+
+                                    <div>
+
+                                        <b>
+                                            {order.id}
+                                        </b>
 
 
                                         <small>
@@ -101,61 +159,131 @@ function Profile(){
 
 
 
-                                    {
-                                        order.items.map(item=>(
 
-                                            <div
-                                                className="order-item"
-                                                key={item.id}
-                                            >
+                                    <span>
 
-                                                <img
-                                                    src={item.image}
-                                                    alt={item.name}
-                                                />
+                                        {order.status}
 
+                                    </span>
 
-                                                <div>
-
-                                                    <h4>
-                                                        {item.brand}
-                                                    </h4>
-
-
-                                                    <p>
-                                                        {item.name}
-                                                    </p>
-
-                                                </div>
-
-
-                                            </div>
-
-                                        ))
-                                    }
-
-
-
-                                    <h3>
-
-                                        Total:
-                                        Rp {order.total.toLocaleString("id-ID")}
-
-                                    </h3>
 
 
                                 </div>
 
-                            ))
 
-                        )
+
+
+
+
+
+                                {
+
+                                    order.items.map(item=>(
+
+
+                                        <div
+
+                                            className="order-item"
+
+                                            key={item.id}
+
+                                        >
+
+
+
+                                            <img
+
+                                                src={item.image}
+
+                                                alt={item.name}
+
+                                            />
+
+
+
+
+
+                                            <div>
+
+
+                                                <h4>
+
+                                                    {item.brand}
+
+                                                </h4>
+
+
+                                                <p>
+
+                                                    {item.name}
+
+                                                </p>
+
+
+                                                <span>
+
+                                                    Qty: {item.qty}
+
+                                                </span>
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+
+
+                                    ))
+
+                                }
+
+
+
+
+
+
+
+
+                                <div className="order-total">
+
+
+                                    <span>
+                                        Total
+                                    </span>
+
+
+                                    <b>
+
+                                        Rp {order.total.toLocaleString("id-ID")}
+
+                                    </b>
+
+
+                                </div>
+
+
+
+
+                            </div>
+
+
+                        ))
+
                     }
+
 
 
                 </div>
 
 
+
+
+
             </div>
+
+
 
         </>
 

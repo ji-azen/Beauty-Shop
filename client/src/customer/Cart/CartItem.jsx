@@ -1,362 +1,176 @@
-import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
-import Navbar from "../../components/Navbar/Navbar";
-
-import { useStore } from "../../context/StoreContext";
-
-import CartItem from "./CartItem";
-
 import "./Cart.css";
 
 
-
-function Cart(){
-
-
-    const {
-
-        cart,
-
-        increaseQty,
-
-        decreaseQty,
-
-        removeFromCart
-
-    } = useStore();
+function CartItem({
+    item,
+    selected,
+    toggleSelect,
+    increaseQty,
+    decreaseQty,
+    removeFromCart,
+    openDelete,
+    setOpenDelete
+}){
 
 
-
-
-
-    const [selected,setSelected] = useState([]);
-
-
-    const [openDelete,setOpenDelete] = useState(null);
-
-
-
-
-
-
-    const toggleSelect = (id)=>{
-
-
-        if(selected.includes(id)){
-
-
-            setSelected(
-
-                selected.filter(
-
-                    item => item !== id
-
-                )
-
-            );
-
-
-        }else{
-
-
-            setSelected([
-
-                ...selected,
-
-                id
-
-            ]);
-
-
-        }
-
-
-    };
-
-
-
-
-
-
-    const selectedItems = cart.filter(
-
-        item => selected.includes(item.id)
-
-    );
-
-
-
-
-
-
-    const total = selectedItems.reduce(
-
-        (sum,item)=>
-
-        sum + (item.price * item.qty),
-
-        0
-
-    );
-
-
-
-
-
+    const subtotal = item.price * item.qty;
 
 
     return(
 
-        <>
+        <div className="cart-item">
 
 
-        <Navbar />
+            <input
+                type="checkbox"
+                checked={selected.includes(item.id)}
+                onChange={()=>toggleSelect(item.id)}
+            />
 
 
 
-        <div className="cart-page">
+            <img
+                src={item.image}
+                alt={item.name}
+            />
 
 
 
 
+            <div className="cart-info">
 
-            <h1>
 
-                🛒 Keranjang Belanja
+                <h3>
+                    {item.brand}
+                </h3>
 
-            </h1>
 
+                <p className="cart-name">
+                    {item.name}
+                </p>
 
 
 
+                <b>
+                    Rp {item.price.toLocaleString("id-ID")}
+                </b>
 
 
 
-            {
+                <div className="qty">
 
-                cart.length === 0 ? (
+                    <button
+                        onClick={()=>decreaseQty(item.id)}
+                    >
+                        -
+                    </button>
 
 
+                    <span>
+                        {item.qty}
+                    </span>
 
-                    <div className="empty-cart">
 
-
-                        <h2>
-
-                            Keranjang masih kosong 😢
-
-                        </h2>
-
-
-                        <p>
-
-                            Yuk pilih produk favorit kamu
-
-                        </p>
-
-
-
-                    </div>
-
-
-
-                )
-
-
-
-                :
-
-
-
-                (
-
-
-
-
-                <>
-
-
-
-
-
-                <div className="cart-list">
-
-
-
-
-
-                    {
-
-                        cart.map(item=>(
-
-
-                            <CartItem
-
-
-                                key={item.id}
-
-
-                                item={item}
-
-
-
-                                selected={selected}
-
-
-
-                                toggleSelect={toggleSelect}
-
-
-
-                                increaseQty={increaseQty}
-
-
-
-                                decreaseQty={decreaseQty}
-
-
-
-                                removeFromCart={removeFromCart}
-
-
-
-                                openDelete={openDelete}
-
-
-
-                                setOpenDelete={setOpenDelete}
-
-
-
-                            />
-
-
-                        ))
-
-
-
-                    }
-
-
-
-
+                    <button
+                        onClick={()=>increaseQty(item.id)}
+                    >
+                        +
+                    </button>
 
                 </div>
 
 
+            </div>
+
+
+
+
+
+            <div className="subtotal">
+
+
+                <span>
+                    Subtotal
+                </span>
+
+
+                <b>
+                    Rp {subtotal.toLocaleString("id-ID")}
+                </b>
+
+
+            </div>
 
 
 
 
 
 
-                <div className="checkout-bar">
+            <div className="delete-area">
+
+
+                <button
+
+                    className="delete-btn"
+
+                    onClick={()=>setOpenDelete(item.id)}
+
+                >
+                    🗑
+                </button>
 
 
 
 
+                {
+                    openDelete === item.id &&
 
-                    <div>
+                    <div className="delete-confirm">
 
 
                         <p>
-
-                            Dipilih:
-
-                            {selected.length}
-
-                            produk
-
+                            Hapus barang?
                         </p>
 
 
+                        <button
+
+                            onClick={()=>{
+
+                                removeFromCart(item.id);
+
+                                setOpenDelete(null);
+
+                            }}
+
+                        >
+                            Ya
+                        </button>
 
 
-                        <h2>
 
-                            Rp {total.toLocaleString("id-ID")}
+                        <button
 
-                        </h2>
+                            onClick={()=>setOpenDelete(null)}
+
+                        >
+                            Tidak
+                        </button>
 
 
                     </div>
 
+                }
 
 
-
-
-
-
-                    {
-
-                        selected.length > 0 && (
-
-
-
-                            <Link to="/checkout">
-
-
-                                <button>
-
-
-                                    Checkout
-
-
-                                </button>
-
-
-                            </Link>
-
-
-
-                        )
-
-                    }
-
-
-
-
-
-
-                </div>
-
-
-
-
-
-
-
-                </>
-
-
-
-
-                )
-
-            }
-
-
-
-
-
+            </div>
 
 
         </div>
 
-
-
-
-
-        </>
-
-
     );
-
 
 }
 
 
-
-export default Cart;
+export default CartItem;

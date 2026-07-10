@@ -1,70 +1,175 @@
 import "./Sidebar.css";
 
-function Sidebar({ open, onClose }) {
 
-    return (
+function Sidebar({
+
+    open,
+
+    onClose,
+
+    category,
+
+    setCategory
+
+}){
+
+
+
+    const changeCategory=(value)=>{
+
+
+        if(category===value){
+
+            setCategory("");
+
+        }
+
+        else{
+
+            setCategory(value);
+
+        }
+
+
+    };
+
+
+
+
+
+    return(
 
         <>
 
-            {open && (
+
+        {
+
+            open &&
+
+            (
+
                 <div
+
                     className="overlay"
+
                     onClick={onClose}
+
                 />
-            )}
 
-            <aside className={`sidebar ${open ? "active" : ""}`}>
+            )
 
-                <h2>Filter Produk</h2>
+        }
 
-                <div className="filter-group">
 
-                    <h4>Kategori</h4>
 
-                    <label>
-                        <input type="checkbox"/>
-                        Skincare
-                    </label>
 
-                    <label>
-                        <input type="checkbox"/>
-                        Makeup
-                    </label>
 
-                    <label>
-                        <input type="checkbox"/>
-                        Body Care
-                    </label>
+        <aside
 
-                </div>
+            className={`sidebar ${open ? "active":""}`}
 
-                <div className="filter-group">
+        >
 
-                    <h4>Harga</h4>
 
-                    <label>
-                        <input type="radio" name="price"/>
-                        Dibawah Rp50.000
-                    </label>
+            <h2>
+                Filter Produk
+            </h2>
 
-                    <label>
-                        <input type="radio" name="price"/>
-                        Rp50.000 - Rp100.000
-                    </label>
 
-                    <label>
-                        <input type="radio" name="price"/>
-                        Diatas Rp100.000
-                    </label>
 
-                </div>
 
-            </aside>
+
+            <div className="filter-group">
+
+
+                <h4>
+                    Kategori
+                </h4>
+
+
+
+                <label>
+
+                    <input
+
+                        type="checkbox"
+
+                        checked={
+                            category==="Skincare"
+                        }
+
+                        onChange={()=>
+                            changeCategory("Skincare")
+                        }
+
+                    />
+
+                    Skincare
+
+                </label>
+
+
+
+
+
+                <label>
+
+                    <input
+
+                        type="checkbox"
+
+                        checked={
+                            category==="Makeup"
+                        }
+
+                        onChange={()=>
+                            changeCategory("Makeup")
+                        }
+
+                    />
+
+                    Makeup
+
+                </label>
+
+
+
+
+
+                <label>
+
+                    <input
+
+                        type="checkbox"
+
+                        checked={
+                            category==="Bodycare"
+                        }
+
+                        onChange={()=>
+                            changeCategory("Bodycare")
+                        }
+
+                    />
+
+                    Bodycare
+
+                </label>
+
+
+
+            </div>
+
+
+        </aside>
+
 
         </>
+
 
     );
 
 }
+
 
 export default Sidebar;

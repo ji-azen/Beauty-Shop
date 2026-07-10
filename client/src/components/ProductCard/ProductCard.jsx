@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 import {
     FiHeart,
-    FiShoppingCart
+    FiShoppingCart,
+    FiCheck
 } from "react-icons/fi";
 
 import { useStore } from "../../context/StoreContext";
@@ -10,52 +11,42 @@ import { useStore } from "../../context/StoreContext";
 import "./ProductCard.css";
 
 
-
 function ProductCard({product}){
 
 
     const {
-
         addToCart,
-
         toggleWishlist,
-
-        wishlist
-
+        wishlist,
+        cart
     } = useStore();
 
 
 
-
-
     const isWishlisted = wishlist.some(
-
         item=>item.id===product.id
-
     );
 
 
+    const isInCart = cart.some(
+        item=>item.id===product.id
+    );
 
 
 
     return(
 
-
         <div className="product-card">
 
 
             <Link
-
                 to={`/product/${product.id}`}
-
+                className="product-image"
             >
 
                 <img
-
                     src={product.image}
-
                     alt={product.name}
-
                 />
 
             </Link>
@@ -67,7 +58,7 @@ function ProductCard({product}){
             <div className="product-info">
 
 
-                <p>
+                <p className="brand">
 
                     {product.brand}
 
@@ -76,9 +67,8 @@ function ProductCard({product}){
 
 
                 <Link
-
                     to={`/product/${product.id}`}
-
+                    className="product-name"
                 >
 
                     <h3>
@@ -92,22 +82,25 @@ function ProductCard({product}){
 
 
 
-
-                <span>
+                <div className="rating">
 
                     ⭐ {product.rating}
 
-                </span>
+                    <span>
+                        ({product.review})
+                    </span>
+
+                </div>
 
 
 
 
-
-                <h3>
+                <h2>
 
                     Rp {product.price.toLocaleString("id-ID")}
 
-                </h3>
+                </h2>
+
 
 
 
@@ -118,30 +111,19 @@ function ProductCard({product}){
 
                     <button
 
+                        className={
+                            isWishlisted
+                            ?
+                            "wishlist active"
+                            :
+                            "wishlist"
+                        }
+
                         onClick={()=>toggleWishlist(product)}
 
                     >
 
-                        <FiHeart
-
-                            fill={
-                                isWishlisted
-                                ?
-                                "red"
-                                :
-                                "none"
-                            }
-
-                            color={
-                                isWishlisted
-                                ?
-                                "red"
-                                :
-                                "black"
-                            }
-
-                        />
-
+                        <FiHeart/>
 
                     </button>
 
@@ -151,33 +133,61 @@ function ProductCard({product}){
 
                     <button
 
+                        className={
+                            isInCart
+                            ?
+                            "cart-btn added"
+                            :
+                            "cart-btn"
+                        }
+
                         onClick={()=>addToCart(product)}
 
                     >
 
-                        <FiShoppingCart/>
 
-                        Keranjang
+                        {
+                            isInCart
+
+                            ?
+
+                            <>
+
+                                <FiCheck/>
+
+                                Ditambahkan
+
+                            </>
+
+
+                            :
+
+                            <>
+
+                                <FiShoppingCart/>
+
+                                Keranjang
+
+                            </>
+
+                        }
+
 
                     </button>
+
 
 
                 </div>
 
 
-
             </div>
-
 
 
         </div>
 
-
     );
 
-
 }
-
 
 
 export default ProductCard;

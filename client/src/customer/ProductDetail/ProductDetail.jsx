@@ -1,4 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+import {
+    FiHeart,
+    FiShoppingCart,
+    FiMinus,
+    FiPlus
+} from "react-icons/fi";
 
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -8,98 +16,347 @@ import { useStore } from "../../context/StoreContext";
 
 import "./ProductDetail.css";
 
-function ProductDetail() {
+
+function ProductDetail(){
 
     const { id } = useParams();
 
-    const { addToCart, toggleWishlist } = useStore();
+    const navigate = useNavigate();
+
+
+    const {
+        addToCart,
+        toggleWishlist,
+        wishlist,
+        setCheckoutItems
+    } = useStore();
+
+
 
     const product = products.find(
+
         item => item.id === Number(id)
+
     );
 
-    if (!product) {
 
-        return <h2>Produk tidak ditemukan.</h2>;
+
+    const [qty,setQty] = useState(1);
+
+
+
+    if(!product){
+
+        return (
+
+            <>
+
+                <Navbar />
+
+                <h2>
+                    Produk tidak ditemukan
+                </h2>
+
+            </>
+
+        );
 
     }
 
-    return (
+
+
+
+
+    const isWishlist = wishlist.some(
+
+        item => item.id === product.id
+
+    );
+
+
+
+
+
+    const handleAddCart = ()=>{
+
+
+        for(let i=0;i<qty;i++){
+
+            addToCart(product);
+
+        }
+
+
+    };
+
+
+
+
+
+    const buyNow = ()=>{
+
+
+        setCheckoutItems([
+
+            {
+
+                ...product,
+
+                qty:qty
+
+            }
+
+        ]);
+
+
+        navigate("/checkout");
+
+
+    };
+
+
+
+
+
+
+    return(
 
         <>
 
-            <Navbar />
+        <Navbar />
 
-            <div className="detail-page">
 
-                <div className="detail-image">
+        <main className="detail-page">
 
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                    />
 
-                </div>
+            <div className="detail-image">
 
-                <div className="detail-info">
 
-                    <h2>{product.brand}</h2>
+                <img
 
-                    <h1>{product.name}</h1>
+                    src={product.image}
 
-                    <p>
+                    alt={product.name}
 
-                        ⭐ {product.rating}
+                />
+
+
+            </div>
+
+
+
+
+
+            <div className="detail-info">
+
+
+                <p className="brand">
+
+                    {product.brand}
+
+                </p>
+
+
+                <h1>
+
+                    {product.name}
+
+                </h1>
+
+
+
+
+                <div className="rating">
+
+                    ⭐ {product.rating}
+
+                    <span>
 
                         ({product.review} Review)
 
-                    </p>
-
-                    <h3>
-
-                        Rp {product.price.toLocaleString("id-ID")}
-
-                    </h3>
-
-                    <p>
-
-                        Produk original 100%.
-
-                        Aman digunakan setiap hari.
-
-                        Cocok untuk semua jenis kulit.
-
-                    </p>
-
-                    <div className="detail-btn">
-
-                        <button
-                            onClick={() => addToCart(product)}
-                        >
-
-                            + Keranjang
-
-                        </button>
-
-                        <button
-                            className="wishlist-btn"
-                            onClick={() => toggleWishlist(product)}
-                        >
-
-                            ❤️ Wishlist
-
-                        </button>
-
-                    </div>
+                    </span>
 
                 </div>
 
+
+
+
+
+                <h2 className="price">
+
+                    Rp {product.price.toLocaleString("id-ID")}
+
+                </h2>
+
+
+
+
+
+                <p className="description">
+
+                    Produk original 100%.
+
+                    Aman digunakan setiap hari.
+
+                    Cocok untuk berbagai jenis kulit.
+
+                </p>
+
+
+
+
+
+                <p className="stock">
+
+                    Stok tersedia: 100
+
+                </p>
+
+
+
+
+
+
+                <div className="quantity">
+
+
+                    <button
+
+                        onClick={()=>{
+
+                            if(qty>1){
+
+                                setQty(qty-1);
+
+                            }
+
+                        }}
+
+                    >
+
+                        <FiMinus />
+
+                    </button>
+
+
+
+
+                    <span>
+
+                        {qty}
+
+                    </span>
+
+
+
+
+                    <button
+
+                        onClick={()=>setQty(qty+1)}
+
+                    >
+
+                        <FiPlus />
+
+                    </button>
+
+
+                </div>
+
+
+
+
+
+
+
+
+                <div className="action">
+
+
+                    <button
+
+                        className="wishlist"
+
+                        onClick={()=>toggleWishlist(product)}
+
+                    >
+
+                        <FiHeart
+
+                            fill={
+
+                                isWishlist
+
+                                ?
+
+                                "red"
+
+                                :
+
+                                "none"
+
+                            }
+
+                        />
+
+                        Wishlist
+
+                    </button>
+
+
+
+
+
+
+                    <button
+
+                        className="cart"
+
+                        onClick={handleAddCart}
+
+                    >
+
+                        <FiShoppingCart />
+
+                        Keranjang
+
+                    </button>
+
+
+                </div>
+
+
+
+
+
+
+                <button
+
+                    className="buy"
+
+                    onClick={buyNow}
+
+                >
+
+                    Beli Sekarang
+
+                </button>
+
+
+
+
+
             </div>
+
+
+        </main>
+
 
         </>
 
     );
 
 }
+
 
 export default ProductDetail;

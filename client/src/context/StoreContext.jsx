@@ -20,58 +20,101 @@ function getStorage(key){
 
 
 
+
+
 export function StoreProvider({children}){
 
 
     const [cart,setCart] = useState(
+
         () => getStorage("cart")
+
     );
+
 
 
     const [wishlist,setWishlist] = useState(
+
         () => getStorage("wishlist")
+
     );
+
 
 
     const [orders,setOrders] = useState(
+
         () => getStorage("orders")
+
     );
+
 
 
     const [checkoutItems,setCheckoutItems] = useState([]);
 
 
 
+
+
+
+
     useEffect(()=>{
 
+
         localStorage.setItem(
+
             "cart",
+
             JSON.stringify(cart)
+
         );
+
 
     },[cart]);
 
 
 
+
+
+
+
     useEffect(()=>{
 
+
         localStorage.setItem(
+
             "wishlist",
+
             JSON.stringify(wishlist)
+
         );
+
 
     },[wishlist]);
 
 
 
+
+
+
+
     useEffect(()=>{
 
+
         localStorage.setItem(
+
             "orders",
+
             JSON.stringify(orders)
+
         );
 
+
     },[orders]);
+
+
+
+
+
 
 
 
@@ -84,49 +127,74 @@ export function StoreProvider({children}){
 
 
             const exist = prev.find(
-                item=>item.id === product.id
+
+                item=>item.id===product.id
+
             );
+
 
 
             if(exist){
 
+
                 return prev.map(item=>
 
-                    item.id === product.id
+
+                    item.id===product.id
 
                     ?
 
                     {
+
                         ...item,
-                        qty:item.qty + 1
+
+                        qty:item.qty+1
+
                     }
+
 
                     :
 
                     item
 
+
                 );
+
 
             }
 
 
 
+
+
+
             return [
+
 
                 ...prev,
 
+
                 {
+
                     ...product,
+
                     qty:1
+
                 }
 
+
             ];
+
 
 
         });
 
 
     }
+
+
+
+
 
 
 
@@ -139,23 +207,35 @@ export function StoreProvider({children}){
 
 
             const exist = prev.find(
-                item=>item.id === product.id
+
+                item=>item.id===product.id
+
             );
+
 
 
             if(exist){
 
+
                 return prev.filter(
-                    item=>item.id !== product.id
+
+                    item=>item.id!==product.id
+
                 );
+
 
             }
 
 
+
             return [
+
                 ...prev,
+
                 product
+
             ];
+
 
 
         });
@@ -167,32 +247,49 @@ export function StoreProvider({children}){
 
 
 
+
+
+
+
     function increaseQty(id){
 
 
         setCart(prev=>
 
+
             prev.map(item=>
 
-                item.id === id
+
+                item.id===id
+
 
                 ?
 
                 {
+
                     ...item,
-                    qty:item.qty + 1
+
+                    qty:item.qty+1
+
                 }
+
 
                 :
 
                 item
 
+
             )
+
 
         );
 
 
     }
+
+
+
+
 
 
 
@@ -203,27 +300,40 @@ export function StoreProvider({children}){
 
         setCart(prev=>
 
+
             prev.map(item=>
 
-                item.id === id && item.qty > 1
+
+                item.id===id && item.qty>1
+
 
                 ?
 
                 {
+
                     ...item,
-                    qty:item.qty - 1
+
+                    qty:item.qty-1
+
                 }
+
 
                 :
 
                 item
 
+
             )
+
 
         );
 
 
     }
+
+
+
+
 
 
 
@@ -235,7 +345,9 @@ export function StoreProvider({children}){
         setCart(prev=>
 
             prev.filter(
-                item=>item.id !== id
+
+                item=>item.id!==id
+
             )
 
         );
@@ -247,46 +359,99 @@ export function StoreProvider({children}){
 
 
 
+
+
+
+    function removeMultipleFromCart(ids){
+
+
+        setCart(prev=>
+
+
+            prev.filter(
+
+                item=>!ids.includes(item.id)
+
+            )
+
+
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+
     return(
+
 
         <StoreContext.Provider
 
+
             value={{
+
 
                 cart,
 
+
                 wishlist,
 
+
                 orders,
+
 
                 checkoutItems,
 
 
+
                 setOrders,
+
 
                 setCheckoutItems,
 
 
+
                 addToCart,
+
 
                 toggleWishlist,
 
 
+
                 increaseQty,
+
 
                 decreaseQty,
 
-                removeFromCart
+
+
+                removeFromCart,
+
+
+                removeMultipleFromCart
+
+
 
             }}
 
+
         >
+
 
             {children}
 
+
         </StoreContext.Provider>
 
+
     );
+
 
 
 }
@@ -294,8 +459,13 @@ export function StoreProvider({children}){
 
 
 
+
+
+
 export function useStore(){
 
+
     return useContext(StoreContext);
+
 
 }

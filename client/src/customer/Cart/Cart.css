@@ -1,157 +1,47 @@
 .cart-page{
-
     min-height:100vh;
-
     background:#f7f8fc;
-
     padding:40px;
-
     padding-bottom:130px;
-
 }
-
-
 
 .cart-page h1{
-
     margin-bottom:30px;
-
     color:#333;
-
 }
 
-
-
-
-
-/* LIST PRODUK */
 
 .cart-list{
-
     display:flex;
-
     flex-direction:column;
-
     gap:20px;
-
 }
 
 
 
-
-
-/* WRAPPER UNTUK SWIPE */
-
-.cart-wrapper{
-
-    position:relative;
-
-    overflow:hidden;
-
-    border-radius:20px;
-
-}
-
-
-
-
-
-/* TOMBOL HAPUS DI BELAKANG */
-
-.delete-slide{
-
-    position:absolute;
-
-    right:0;
-
-    top:0;
-
-    width:110px;
-
-    height:100%;
-
-    background:#ff6b6b;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-
-
-
-
-.delete-slide button{
-
-    border:none;
-
-    background:none;
-
-    color:white;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-
-
-
-
-/* KARTU PRODUK */
-
-.cart-card{
-
-    position:relative;
-
-    z-index:2;
+.cart-item{
 
     display:flex;
 
     align-items:center;
 
-    gap:20px;
+    gap:25px;
 
     background:white;
 
-    padding:20px;
+    padding:25px;
 
     border-radius:20px;
 
-    box-shadow:
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
 
-    0 10px 25px rgba(0,0,0,.08);
-
-
-    transition:.3s;
+    position:relative;
 
 }
 
 
 
-
-
-/* SAAT DIGESER */
-
-.show-delete{
-
-    transform:translateX(-110px);
-
-}
-
-
-
-
-
-/* CHECKBOX */
-
-.cart-card input{
+.cart-item input{
 
     width:22px;
 
@@ -163,27 +53,20 @@
 
 
 
+.cart-item img{
 
+    width:120px;
 
-/* GAMBAR PRODUK */
-
-.cart-card img{
-
-    width:130px;
-
-    height:130px;
+    height:120px;
 
     object-fit:cover;
 
-    border-radius:15px;
+    border-radius:18px;
 
 }
 
 
 
-
-
-/* INFO */
 
 .cart-info{
 
@@ -195,9 +78,9 @@
 
 .cart-info h3{
 
-    margin:0;
-
     color:#5d8ef7;
+
+    margin-bottom:8px;
 
     font-size:20px;
 
@@ -205,23 +88,23 @@
 
 
 
-.cart-info p{
-
-    margin:8px 0;
+.cart-name{
 
     color:#555;
 
+    font-size:16px;
+
+    margin-bottom:12px;
+
 }
-
-
 
 
 
 .cart-info b{
 
-    font-size:18px;
-
     color:#333;
+
+    font-size:18px;
 
 }
 
@@ -229,9 +112,7 @@
 
 
 
-/* JUMLAH BARANG */
-
-.qty-box{
+.qty{
 
     display:flex;
 
@@ -245,23 +126,21 @@
 
 
 
+.qty button{
 
+    width:40px;
 
-.qty-box button{
-
-    width:35px;
-
-    height:35px;
+    height:40px;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:12px;
 
     background:#6ea8ff;
 
     color:white;
 
-    font-size:18px;
+    font-size:22px;
 
     cursor:pointer;
 
@@ -269,9 +148,7 @@
 
 
 
-
-
-.qty-box button:hover{
+.qty button:hover{
 
     background:#5d8ef7;
 
@@ -279,13 +156,15 @@
 
 
 
+.qty span{
 
-
-.qty-box span{
+    font-size:20px;
 
     font-weight:bold;
 
-    font-size:18px;
+    min-width:25px;
+
+    text-align:center;
 
 }
 
@@ -293,7 +172,127 @@
 
 
 
-/* CHECKOUT BAWAH */
+.subtotal{
+
+    min-width:180px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+
+.subtotal span{
+
+    color:#888;
+
+}
+
+
+
+.subtotal b{
+
+    color:#333;
+
+    font-size:20px;
+
+}
+
+
+
+
+
+.delete-area{
+
+    position:relative;
+
+}
+
+
+
+.delete-btn{
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#ffe8e8;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+}
+
+
+
+.delete-btn:hover{
+
+    background:#ffcccc;
+
+}
+
+
+
+
+
+.delete-confirm{
+
+    position:absolute;
+
+    right:0;
+
+    top:55px;
+
+    width:160px;
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+    z-index:10;
+
+}
+
+
+
+.delete-confirm p{
+
+    margin-bottom:10px;
+
+}
+
+
+
+.delete-confirm button{
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-right:8px;
+
+}
+
+
+
+
 
 .checkout-bar{
 
@@ -313,11 +312,9 @@
 
     align-items:center;
 
-    padding:18px 50px;
+    padding:20px 50px;
 
-    box-shadow:
-
-    0 -5px 20px rgba(0,0,0,.1);
+    box-shadow:0 -5px 20px rgba(0,0,0,.1);
 
     z-index:100;
 
@@ -325,29 +322,11 @@
 
 
 
-
-
-.checkout-bar p{
-
-    margin:0;
-
-    color:#666;
-
-}
-
-
-
-
-
 .checkout-bar h2{
 
-    margin:5px 0 0;
-
-    color:#333;
+    color:#5d8ef7;
 
 }
-
-
 
 
 
@@ -371,44 +350,31 @@
 
 
 
-
-
 .checkout-bar button:hover{
 
-    background:#477ee8;
+    opacity:.9;
 
 }
 
 
 
-
-
-/* KOSONG */
 
 .empty-cart{
 
     background:white;
 
-    padding:50px;
+    padding:60px;
 
     border-radius:20px;
 
     text-align:center;
-
-    box-shadow:
-
-    0 10px 25px rgba(0,0,0,.08);
 
 }
 
 
 
 
-
-/* RESPONSIVE */
-
 @media(max-width:900px){
-
 
     .cart-page{
 
@@ -417,39 +383,20 @@
     }
 
 
+    .cart-item{
 
-    .cart-card{
-
-        gap:12px;
-
-    }
-
-
-
-    .cart-card img{
-
-        width:90px;
-
-        height:90px;
+        flex-wrap:wrap;
 
     }
 
 
+    .subtotal{
 
-    .checkout-bar{
+        width:100%;
 
-        padding:15px 20px;
-
-    }
-
-
-
-    .checkout-bar button{
-
-        padding:12px 25px;
+        margin-left:60px;
 
     }
-
 
 }
 
@@ -457,13 +404,13 @@
 
 @media(max-width:600px){
 
+    .cart-item img{
 
-    .cart-card{
+        width:80px;
 
-        align-items:flex-start;
+        height:80px;
 
     }
-
 
 
     .cart-info h3{
@@ -473,20 +420,17 @@
     }
 
 
+    .checkout-bar{
 
-    .cart-info p{
-
-        font-size:14px;
-
-    }
-
-
-
-    .checkout-bar h2{
-
-        font-size:18px;
+        padding:15px 20px;
 
     }
 
+
+    .checkout-bar button{
+
+        padding:12px 20px;
+
+    }
 
 }

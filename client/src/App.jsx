@@ -6,7 +6,7 @@ import { useStore } from "./context/StoreContext";
 function App(){
 
 
-    const { message } = useStore();
+    const { message = "" } = useStore();
 
 
 
