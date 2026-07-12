@@ -4,10 +4,17 @@ const router = express.Router();
 
 
 const {
+
     createOrder,
+
     getMyOrders,
-    getAllOrders
+
+    getAllOrders,
+
+    updateStatus
+
 } = require("../controllers/orderController");
+
 
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -17,34 +24,32 @@ const adminMiddleware = require("../middleware/adminMiddleware");
 
 
 
-
 // ==========================
 // CUSTOMER
 // ==========================
 
 
-// buat pesanan
-
 router.post(
+
     "/",
+
     authMiddleware,
+
     createOrder
+
 );
 
 
-
-
-// lihat pesanan sendiri
 
 router.get(
+
     "/my",
+
     authMiddleware,
+
     getMyOrders
+
 );
-
-
-
-
 
 
 
@@ -54,17 +59,31 @@ router.get(
 // ==========================
 
 
-// lihat semua order
-
 router.get(
+
     "/",
+
     authMiddleware,
+
     adminMiddleware,
+
     getAllOrders
+
 );
 
 
 
+router.put(
+
+    "/:id/status",
+
+    authMiddleware,
+
+    adminMiddleware,
+
+    updateStatus
+
+);
 
 
 

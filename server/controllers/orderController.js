@@ -1,14 +1,11 @@
 const db = require("../config/database");
 
 
-
-
 // ==========================
-// CREATE ORDER CUSTOMER
+// CUSTOMER BUAT ORDER
 // ==========================
 
 function createOrder(req,res){
-
 
     const user_id = req.user.id;
 
@@ -37,7 +34,6 @@ function createOrder(req,res){
         });
 
     }
-
 
 
 
@@ -72,7 +68,6 @@ function createOrder(req,res){
             total,
             "Menunggu Pembayaran"
         ],
-
 
         (err,result)=>{
 
@@ -171,28 +166,22 @@ function createOrder(req,res){
 
     );
 
-
-
 }
 
 
 
-
-
-
 // ==========================
-// GET MY ORDERS CUSTOMER
+// CUSTOMER LIHAT ORDER SENDIRI
 // ==========================
-
 
 function getMyOrders(req,res){
 
 
-    const user_id=req.user.id;
+    const user_id = req.user.id;
 
 
 
-    const sql=`
+    const sql = `
 
         SELECT *
 
@@ -219,7 +208,9 @@ function getMyOrders(req,res){
 
                 return res.status(500).json({
 
-                    success:false
+                    success:false,
+
+                    message:"Gagal mengambil pesanan"
 
                 });
 
@@ -241,24 +232,19 @@ function getMyOrders(req,res){
 
     );
 
-
 }
 
 
 
-
-
-
 // ==========================
-// GET ALL ORDERS ADMIN
+// ADMIN LIHAT SEMUA ORDER
 // ==========================
-
 
 function getAllOrders(req,res){
 
 
 
-    const sql=`
+    const sql = `
 
         SELECT
 
@@ -274,7 +260,7 @@ function getAllOrders(req,res){
 
         JOIN users
 
-        ON orders.user_id=users.id
+        ON orders.user_id = users.id
 
 
         ORDER BY orders.id DESC
@@ -294,7 +280,9 @@ function getAllOrders(req,res){
 
                 return res.status(500).json({
 
-                    success:false
+                    success:false,
+
+                    message:"Gagal mengambil data order"
 
                 });
 
@@ -321,16 +309,100 @@ function getAllOrders(req,res){
 
 
 
+// ==========================
+// ADMIN UPDATE STATUS ORDER
+// ==========================
+
+function updateStatus(req,res){
+
+
+    const { id } = req.params;
+
+
+    const { status } = req.body;
+
+
+
+    if(!status){
+
+        return res.status(400).json({
+
+            success:false,
+
+            message:"Status wajib diisi"
+
+        });
+
+    }
+
+
+
+    const sql = `
+
+        UPDATE orders
+
+        SET status=?
+
+        WHERE id=?
+
+    `;
+
+
+
+    db.query(
+
+        sql,
+
+        [
+            status,
+            id
+        ],
+
+        (err,result)=>{
+
+
+            if(err){
+
+                return res.status(500).json({
+
+                    success:false,
+
+                    message:"Gagal update status"
+
+                });
+
+            }
+
+
+
+            res.json({
+
+                success:true,
+
+                message:"Status berhasil diperbarui"
+
+            });
+
+
+
+        }
+
+    );
+
+
+}
 
 
 
 
-module.exports={
+module.exports = {
 
     createOrder,
 
     getMyOrders,
 
-    getAllOrders
+    getAllOrders,
+
+    updateStatus
 
 };

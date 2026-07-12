@@ -12,7 +12,7 @@ require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-
+const adminRoutes = require("./routes/adminRoutes");
 
 
 const app = express();
@@ -123,7 +123,10 @@ app.use(
     orderRoutes
 );
 
-
+app.use(
+    "/api/admin", 
+    adminRoutes
+);
 
 
 

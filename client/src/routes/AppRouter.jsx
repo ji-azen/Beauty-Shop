@@ -12,6 +12,9 @@ import Profile from "../customer/Profile/Profile";
 import Checkout from "../customer/Checkout/Checkout";
 import Orders from "../pages/Orders/Orders";
 
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminOrders from "../pages/Admin/AdminOrders";
+
 import Login from "../auth/Login/Login";
 import Register from "../auth/Register/Register";
 import ForgotPassword from "../auth/ForgotPassword/ForgotPassword";
@@ -76,6 +79,20 @@ function AppRouter(){
                     element={<Orders/>}
                 />
 
+                <Route
+                    path="/admin"
+                    element={<AdminDashboard />}
+                />
+
+                <Route
+                    path="/admin/dashboard"
+                    element={<AdminDashboard />}
+                />
+
+                <Route
+                    path="/admin/orders"
+                    element={<AdminOrders />}
+                />
             </Routes>
         </BrowserRouter>
     );

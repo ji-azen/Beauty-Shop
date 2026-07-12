@@ -31,28 +31,35 @@ export function AuthProvider({ children }) {
     useEffect(()=>{
 
 
-        const token =
-        localStorage.getItem("token");
+    const token =
+    localStorage.getItem("token");
 
 
-        const savedUser =
-        localStorage.getItem("user");
+    const savedUser =
+    localStorage.getItem("user");
 
 
+
+    const loadUser = () => {
 
         if(token && savedUser){
 
-            setUser(
-                JSON.parse(savedUser)
-            );
+            const userData =
+            JSON.parse(savedUser);
+
+            setUser(userData);
 
         }
 
-
         setLoading(false);
 
+    };
 
-    },[]);
+
+    loadUser();
+
+
+},[]);
 
 
 
