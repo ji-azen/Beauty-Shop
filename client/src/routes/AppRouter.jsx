@@ -14,6 +14,7 @@ import Orders from "../pages/Orders/Orders";
 
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminOrders from "../pages/Admin/AdminOrders";
+import AdminProducts from "../pages/AdminProduct/AdminProduct";
 
 import Login from "../auth/Login/Login";
 import Register from "../auth/Register/Register";
@@ -93,7 +94,12 @@ function AppRouter(){
                     path="/admin/orders"
                     element={<AdminOrders />}
                 />
-            </Routes>
+
+                <Route
+                    path="/admin/products"
+                    element={<AdminProducts/>}
+                />
+                </Routes>
         </BrowserRouter>
     );
 }

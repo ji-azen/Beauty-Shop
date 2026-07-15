@@ -120,24 +120,7 @@ function getProductById(req,res){
 
 
 
-function createProduct(req,res){
-
-if(
-    !brand ||
-    !name ||
-    !price ||
-    !stock
-){
-
-    return res.status(400).json({
-
-        success:false,
-
-        message:"Data produk belum lengkap"
-
-    });
-
-}
+function createProduct(req, res) {
 
     const {
 
@@ -155,12 +138,33 @@ if(
 
         image
 
-
     } = req.body;
 
 
+    if (
 
-    const sql=`
+        !brand ||
+
+        !name ||
+
+        !price ||
+
+        !stock
+
+    ) {
+
+        return res.status(400).json({
+
+            success: false,
+
+            message: "Data produk belum lengkap"
+
+        });
+
+    }
+
+
+    const sql = `
 
         INSERT INTO products
 
@@ -174,10 +178,9 @@ if(
             image
         )
 
-        VALUES(?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?)
 
     `;
-
 
 
     db.query(
@@ -185,53 +188,55 @@ if(
         sql,
 
         [
+
             category_id || null,
+
             brand,
+
             name,
-            description,
+
+            description || "",
+
             price,
+
             stock,
-            image
+
+            image || ""
+
         ],
 
+        (err, result) => {
 
-        (err,result)=>{
+            if (err) {
 
-
-            if(err){
+                console.log(err);
 
                 return res.status(500).json({
 
-                    success:false,
+                    success: false,
 
-                    message:"Gagal menambah produk"
+                    message: "Gagal menambah produk"
 
                 });
 
             }
 
 
+            res.status(201).json({
 
-            res.json({
+                success: true,
 
-                success:true,
+                message: "Produk berhasil ditambahkan",
 
-                message:"Produk berhasil ditambahkan",
-
-                id:result.insertId
+                id: result.insertId
 
             });
 
-
-
         }
-
 
     );
 
-
 }
-
 
 
 function updateProduct(req,res){

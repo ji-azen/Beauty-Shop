@@ -62,7 +62,7 @@ function Navbar(){
                 to="/"
                 className="logo"
             >
-                🩵 Beauty Store
+                🌻 Bloomé Élan Beauty
             </Link>
 
             <div className="search-box">
