@@ -1,91 +1,279 @@
+import { useEffect, useState } from "react";
+
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
-import products from "../../data/products";
+
 import { useStore } from "../../context/StoreContext";
+import api from "../../api/axios";
+
 import "./Home.css";
 
-function Home(){
+function Home() {
+
     const {
+
         search,
+
         category,
+
         setCategory
+
     } = useStore();
 
-    const filteredProducts = products.filter(product=>{
-        const matchSearch =
-            product.name
-            .toLowerCase()
-            .includes(
-                search.toLowerCase()
-            )
-            ||
-            product.brand
-            .toLowerCase()
-            .includes(
-                search.toLowerCase()
+
+
+    const [products, setProducts] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+
+
+
+    async function getProducts() {
+
+        try {
+
+            const response = await api.get(
+
+                "/products"
+
             );
-        const matchCategory =
-            category === "Semua"
+
+            console.log(
+
+                "PRODUCTS :",
+
+                response.data
+
+            );
+
+            setProducts(
+
+                response.data.data
+
+            );
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    }
+
+
+
+    useEffect(() => {
+
+        async function fetchProducts() {
+
+            await getProducts();
+
+        }
+
+        fetchProducts();
+
+    }, []);
+
+
+
+
+    const filteredProducts = products.filter(product => {
+
+        const matchSearch =
+
+            product.name
+
+                .toLowerCase()
+
+                .includes(
+
+                    search.toLowerCase()
+
+                )
+
             ||
+
+            product.brand
+
+                .toLowerCase()
+
+                .includes(
+
+                    search.toLowerCase()
+
+                );
+
+
+
+        const matchCategory =
+
+            category === "Semua"
+
+            ||
+
             product.category === category;
+
+
+
         return matchSearch && matchCategory;
+
     });
 
-    return(
+
+
+
+    return (
+
         <>
-        <Navbar />
-        <Hero />
-        <main className="home">
-            <div className="top-bar">
-                <h2>
-                    Semua Produk
-                </h2>
 
-                <select
-                    value={category}
-                    onChange={(e)=>
-                        setCategory(e.target.value)
-                    }
-                >
-                    <option>
-                        Semua
-                    </option>
+            <Navbar />
 
-                    <option>
-                        Skincare
-                    </option>
+            <Hero />
 
-                    <option>
-                        Makeup
-                    </option>
 
-                    <option>
-                        Bodycare
-                    </option>
-                </select>
-            </div>
 
-            <div className="product-grid">
-            {
-                filteredProducts.length === 0 ?
-                (
-                    <h3>
-                        Produk tidak ditemukan 😢
-                    </h3>
-                )
-                :
-                filteredProducts.map(product=>(
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                    />
-                ))
-            }
-            </div>
-        </main>
+            <main className="home">
+
+                <div className="top-bar">
+
+                    <h2>
+
+                        Semua Produk
+
+                    </h2>
+
+
+
+                    <select
+
+                        value={category}
+
+                        onChange={(e) =>
+
+                            setCategory(
+
+                                e.target.value
+
+                            )
+
+                        }
+
+                    >
+
+                        <option>
+
+                            Semua
+
+                        </option>
+
+                        <option>
+
+                            Skincare
+
+                        </option>
+
+                        <option>
+
+                            Makeup
+
+                        </option>
+
+                        <option>
+
+                            Body Care
+
+                        </option>
+
+                        <option>
+
+                            Hair Care
+
+                        </option>
+
+                        <option>
+
+                            Fragrance
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+
+                {
+
+                    loading ?
+
+                    (
+
+                        <h3>
+
+                            Memuat Produk...
+
+                        </h3>
+
+                    )
+
+                    :
+
+                    (
+
+                        <div className="product-grid">
+
+                            {
+
+                                filteredProducts.length === 0 ?
+
+                                (
+
+                                    <h3>
+
+                                        Produk tidak ditemukan 😢
+
+                                    </h3>
+
+                                )
+
+                                :
+
+                                filteredProducts.map(product => (
+
+                                    <ProductCard
+
+                                        key={product.id}
+
+                                        product={product}
+
+                                    />
+
+                                ))
+
+                            }
+
+                        </div>
+
+                    )
+
+                }
+
+            </main>
+
         </>
+
     );
+
 }
 
 export default Home;

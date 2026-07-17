@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 
-
 const {
 
     getProducts,
@@ -15,17 +14,17 @@ const {
 
     deleteProduct
 
-
 } = require("../controllers/productController");
 
-
-
 const authMiddleware = require("../middleware/authMiddleware");
-
 const adminMiddleware = require("../middleware/adminMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 
 
 
+// ==========================
+// GET ALL PRODUCTS
+// ==========================
 
 router.get(
 
@@ -37,6 +36,10 @@ router.get(
 
 
 
+// ==========================
+// GET PRODUCT BY ID
+// ==========================
+
 router.get(
 
     "/:id",
@@ -46,6 +49,11 @@ router.get(
 );
 
 
+
+// ==========================
+// CREATE PRODUCT
+// ==========================
+
 router.post(
 
     "/",
@@ -54,12 +62,17 @@ router.post(
 
     adminMiddleware,
 
+    upload.single("image"),
+
     createProduct
 
 );
 
 
 
+// ==========================
+// UPDATE PRODUCT
+// ==========================
 
 router.put(
 
@@ -69,12 +82,17 @@ router.put(
 
     adminMiddleware,
 
+    upload.single("image"),
+
     updateProduct
 
 );
 
 
 
+// ==========================
+// DELETE PRODUCT
+// ==========================
 
 router.delete(
 
@@ -87,9 +105,6 @@ router.delete(
     deleteProduct
 
 );
-
-
-
 
 
 

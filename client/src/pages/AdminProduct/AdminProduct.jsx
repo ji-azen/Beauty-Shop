@@ -22,7 +22,7 @@ function AdminProduct() {
     const [editingId, setEditingId] = useState(null);
     const [form, setForm] = useState({
 
-    category_id: "",
+    category_id: 1,
 
     brand: "",
 
@@ -49,6 +49,11 @@ function AdminProduct() {
         } catch (error) {
 
             console.log(error);
+
+            console.log(error.response);
+
+            console.log(error.response.data);
+
 
         } finally {
 
@@ -98,13 +103,13 @@ async function addProduct(){
 
     try{
 
-        await api.post(
+        await api.post("/products",{
 
-            "/products",
+    ...form,
 
-            form
+    category_id:1
 
-        );
+});
 
         alert("Produk berhasil ditambahkan");
 
@@ -164,19 +169,19 @@ function resetForm(){
 
     setForm({
 
-        category_id:"",
+        category_id: 1,
 
-        brand:"",
+    brand: "",
 
-        name:"",
+    name: "",
 
-        description:"",
+    description: "",
 
-        price:"",
+    price: "",
 
-        stock:"",
+    stock: "",
 
-        image:""
+    image: ""
 
     });
 

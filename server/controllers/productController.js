@@ -1,125 +1,122 @@
 const db = require("../config/database");
 
-
-
-function getProducts(req,res){
-
+// =========================
+// GET ALL PRODUCTS
+// =========================
+function getProducts(req, res) {
 
     const sql = `
-        SELECT *
+
+        SELECT
+
+        products.*,
+
+        categories.name AS category
+
         FROM products
-        ORDER BY id DESC
+
+        LEFT JOIN categories
+
+        ON products.category_id = categories.id
+
+        ORDER BY products.id DESC
+
     `;
 
+    db.query(sql, (err, result) => {
 
+        if (err) {
 
-    db.query(
-        sql,
-        (err,result)=>{
+            return res.status(500).json({
 
+                success: false,
 
-            if(err){
-
-                return res.status(500).json({
-
-                    success:false,
-
-                    message:"Gagal mengambil produk"
-
-                });
-
-            }
-
-
-
-            res.json({
-
-                success:true,
-
-                total:result.length,
-
-                data:result
+                message: "Gagal mengambil produk"
 
             });
 
-
-
         }
-    );
 
+        res.json({
+
+            success: true,
+
+            total: result.length,
+
+            data: result
+
+        });
+
+    });
 
 }
 
+// =========================
+// GET PRODUCT BY ID
+// =========================
+function getProductById(req, res) {
 
+    const { id } = req.params;
 
+    const sql = `
 
-function getProductById(req,res){
+        SELECT
 
+        products.*,
 
-    const {id}=req.params;
+        categories.name AS category
 
-
-
-    const sql=`
-        SELECT *
         FROM products
-        WHERE id=?
+
+        LEFT JOIN categories
+
+        ON products.category_id = categories.id
+
+        WHERE products.id = ?
+
     `;
 
+    db.query(sql, [id], (err, result) => {
 
+        if (err) {
 
-    db.query(
-        sql,
-        [id],
-        (err,result)=>{
+            return res.status(500).json({
 
+                success: false,
 
-            if(err){
-
-                return res.status(500).json({
-
-                    success:false,
-
-                    message:"Database error"
-
-                });
-
-            }
-
-
-
-            if(result.length===0){
-
-                return res.status(404).json({
-
-                    success:false,
-
-                    message:"Produk tidak ditemukan"
-
-                });
-
-            }
-
-
-
-            res.json({
-
-                success:true,
-
-                data:result[0]
+                message: "Database error"
 
             });
 
+        }
 
+        if (result.length === 0) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Produk tidak ditemukan"
+
+            });
 
         }
-    );
 
+        res.json({
+
+            success: true,
+
+            data: result[0]
+
+        });
+
+    });
 
 }
 
-
-
+// =========================
+// CREATE PRODUCT
+// =========================
 function createProduct(req, res) {
 
     const {
@@ -139,7 +136,6 @@ function createProduct(req, res) {
         image
 
     } = req.body;
-
 
     if (
 
@@ -163,25 +159,31 @@ function createProduct(req, res) {
 
     }
 
-
     const sql = `
 
         INSERT INTO products
 
         (
+
             category_id,
+
             brand,
+
             name,
+
             description,
+
             price,
+
             stock,
+
             image
+
         )
 
         VALUES (?,?,?,?,?,?,?)
 
     `;
-
 
     db.query(
 
@@ -221,7 +223,6 @@ function createProduct(req, res) {
 
             }
 
-
             res.status(201).json({
 
                 success: true,
@@ -238,14 +239,16 @@ function createProduct(req, res) {
 
 }
 
+// =========================
+// UPDATE PRODUCT
+// =========================
+function updateProduct(req, res) {
 
-function updateProduct(req,res){
-
-
-    const {id}=req.params;
-
+    const { id } = req.params;
 
     const {
+
+        category_id,
 
         brand,
 
@@ -259,143 +262,126 @@ function updateProduct(req,res){
 
         image
 
+    } = req.body;
 
-    }=req.body;
-
-
-
-    const sql=`
+    const sql = `
 
         UPDATE products
 
         SET
 
-        brand=?,
-        name=?,
-        description=?,
-        price=?,
-        stock=?,
-        image=?
+        category_id = ?,
 
-        WHERE id=?
+        brand = ?,
+
+        name = ?,
+
+        description = ?,
+
+        price = ?,
+
+        stock = ?,
+
+        image = ?
+
+        WHERE id = ?
 
     `;
-
-
 
     db.query(
 
         sql,
 
         [
+
+            category_id || null,
+
             brand,
+
             name,
-            description,
+
+            description || "",
+
             price,
+
             stock,
-            image,
+
+            image || "",
+
             id
+
         ],
 
+        (err) => {
 
-        (err)=>{
-
-
-            if(err){
+            if (err) {
 
                 return res.status(500).json({
 
-                    success:false,
+                    success: false,
 
-                    message:"Gagal update produk"
+                    message: "Gagal update produk"
 
                 });
 
             }
 
-
-
             res.json({
 
-                success:true,
+                success: true,
 
-                message:"Produk berhasil diupdate"
+                message: "Produk berhasil diupdate"
 
             });
-
-
 
         }
 
     );
 
-
 }
 
+// =========================
+// DELETE PRODUCT
+// =========================
+function deleteProduct(req, res) {
 
+    const { id } = req.params;
 
-function deleteProduct(req,res){
-
-
-    const {id}=req.params;
-
-
-
-    const sql=`
+    const sql = `
 
         DELETE FROM products
 
-        WHERE id=?
+        WHERE id = ?
 
     `;
 
+    db.query(sql, [id], (err) => {
 
+        if (err) {
 
-    db.query(
+            return res.status(500).json({
 
-        sql,
+                success: false,
 
-        [id],
-
-        (err)=>{
-
-
-            if(err){
-
-                return res.status(500).json({
-
-                    success:false,
-
-                    message:"Gagal hapus produk"
-
-                });
-
-            }
-
-
-
-            res.json({
-
-                success:true,
-
-                message:"Produk berhasil dihapus"
+                message: "Gagal hapus produk"
 
             });
 
-
-
         }
 
-    );
+        res.json({
 
+            success: true,
+
+            message: "Produk berhasil dihapus"
+
+        });
+
+    });
 
 }
 
-
-
-
-
-module.exports={
+module.exports = {
 
     getProducts,
 
