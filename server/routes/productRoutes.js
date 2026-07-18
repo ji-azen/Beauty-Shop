@@ -17,14 +17,10 @@ const {
 } = require("../controllers/productController");
 
 const authMiddleware = require("../middleware/authMiddleware");
+
 const adminMiddleware = require("../middleware/adminMiddleware");
+
 const upload = require("../middleware/uploadMiddleware");
-
-
-
-// ==========================
-// GET ALL PRODUCTS
-// ==========================
 
 router.get(
 
@@ -34,12 +30,6 @@ router.get(
 
 );
 
-
-
-// ==========================
-// GET PRODUCT BY ID
-// ==========================
-
 router.get(
 
     "/:id",
@@ -47,12 +37,6 @@ router.get(
     getProductById
 
 );
-
-
-
-// ==========================
-// CREATE PRODUCT
-// ==========================
 
 router.post(
 
@@ -68,12 +52,6 @@ router.post(
 
 );
 
-
-
-// ==========================
-// UPDATE PRODUCT
-// ==========================
-
 router.put(
 
     "/:id",
@@ -88,12 +66,6 @@ router.put(
 
 );
 
-
-
-// ==========================
-// DELETE PRODUCT
-// ==========================
-
 router.delete(
 
     "/:id",
@@ -105,7 +77,5 @@ router.delete(
     deleteProduct
 
 );
-
-
 
 module.exports = router;

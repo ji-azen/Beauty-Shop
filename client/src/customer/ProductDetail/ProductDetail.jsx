@@ -1,159 +1,333 @@
-import { 
-    useState 
-} from "react";
-
-import { 
-    useParams,
-    useNavigate
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+    FiHeart,
+    FiShoppingCart,
+    FiMinus,
+    FiPlus
+} from "react-icons/fi";
 
 import Navbar from "../../components/Navbar/Navbar";
-import products from "../../data/products";
-import { 
-    useStore 
-} from "../../context/StoreContext";
+import api from "../../api/axios";
+import { useStore } from "../../context/StoreContext";
 
 import "./ProductDetail.css";
 
-function ProductDetail(){
+function ProductDetail() {
+
+    const { id } = useParams();
 
     const {
-        id
-    } = useParams();
 
-    const navigate = useNavigate();
-
-    const {
         addToCart,
+
         toggleWishlist,
-        setCheckoutItems,
+
+        wishlist
+
     } = useStore();
 
-    const product = products.find(
-        item=>item.id === Number(id)
-    );
+    const [product, setProduct] = useState(null);
 
-    const [qty,setQty] = useState(1);
-    if(!product){
-        return(
-            <h2>
-                Produk tidak ditemukan
-            </h2>
-        );
-    }
+    const [loading, setLoading] = useState(true);
 
-    function handleCart(){
-        for(let i=0;i<qty;i++){
-            addToCart(product);
-        }
-    }
+    const [qty, setQty] = useState(1);
 
-    function buyNow(){
-        setCheckoutItems([
-            {
-                ...product,
-                qty:qty
+    useEffect(() => {
+
+        async function getProduct() {
+
+            try {
+
+                const response = await api.get(
+
+                    `/products/${id}`
+
+                );
+
+                setProduct(
+
+                    response.data.data
+
+                );
+
             }
-        ]);
-        navigate("/checkout");
-    }
 
-    return(
-        <>
-        <Navbar />
-        <main className="detail-page">
-            <div className="detail-image">
-                <img
-                    src={product.image}
-                    alt={product.name}
-                />
-            </div>
+            catch (error) {
 
-            <div className="detail-info">
-                <p className="brand">
-                    {product.brand}
-                </p>
+                console.log(error);
 
-                <h1>
-                    {product.name}
-                </h1>
+            }
 
-                <div className="rating">
-                    ⭐ {product.rating}
-                    <span>
-                        ({product.review} Review)
-                    </span>
-                </div>
+            finally {
 
-                <h2 className="price">
-                    Rp {product.price.toLocaleString("id-ID")}
+                setLoading(false);
+
+            }
+
+        }
+
+        getProduct();
+
+    }, [id]);
+
+    if (loading) {
+
+        return (
+
+            <>
+                <Navbar />
+
+                <h2
+                    style={{
+
+                        padding:40,
+
+                        textAlign:"center"
+
+                    }}
+                >
+
+                    Memuat Produk...
+
                 </h2>
 
-                <p className="description">
-                    Produk original 100%.
-                    Aman digunakan setiap hari.
-                    Cocok untuk berbagai jenis kulit.
-                </p>
+            </>
 
-                <div className="stock">
-                    Stok tersedia: <b>99</b>
-                </div>
+        );
 
-                <div className="quantity">
-                    <span>
-                        Jumlah
-                    </span>
+    }
 
-                    <button
-                        onClick={()=>{
-                            if(qty>1)
-                            setQty(qty-1)
-                        }}
-                    >
-                        -
-                    </button>
-                    <b>
-                        {qty}
-                    </b>
+    if (!product) {
 
-                    <button
-                        onClick={()=>setQty(qty+1)}
-                    >
-                        +
-                    </button>
-                </div>
+        return (
 
-                <div className="delivery">
-                    🚚 Gratis ongkir
-                    <br/>
-                    📦 Estimasi 1-3 hari
-                </div>
+            <>
+                <Navbar />
 
-                <div className="detail-btn">
-                    <button
-                        onClick={handleCart}
-                    >
-                        🛒 Keranjang
-                    </button>
+                <h2
+                    style={{
 
-                    <button
-                        className="buy-btn"
-                        onClick={buyNow}
-                    >
-                        ⚡ Beli Sekarang
-                    </button>
+                        padding:40,
 
-                    <button
-                        className="wishlist-btn"
-                        onClick={()=>toggleWishlist(product)}
-                    >
-                        ❤️
-                    </button>
-                </div>
-            </div>
-        </main>
-        </>
+                        textAlign:"center"
+
+                    }}
+                >
+
+                    Produk tidak ditemukan.
+
+                </h2>
+
+            </>
+
+        );
+
+    }
+
+    const isWishlisted = wishlist.some(
+
+        item=>item.id===product.id
+
     );
+
+    const imageUrl = product.image
+
+        ? `http://localhost:5000${product.image}`
+
+        : "https://placehold.co/700x700?text=No+Image";
+
+    return (
+
+        <>
+
+            <Navbar />
+
+            <main className="detail-page">
+
+                <div className="detail-card">
+
+                    <div className="detail-image">
+
+                        <img
+
+                            src={imageUrl}
+
+                            alt={product.name}
+
+                            loading="lazy"
+                        />
+
+                    </div>
+
+                    <div className="detail-info">
+
+                        <p className="brand">
+
+                            {product.brand}
+
+                        </p>
+
+                        <h1>
+
+                            {product.name}
+
+                        </h1>
+
+                        <div className="rating">
+
+                            ⭐ 5.0
+
+                            <span>
+
+                                (0 Review)
+
+                            </span>
+
+                        </div>
+
+                        <h2>
+
+                            Rp {Number(product.price).toLocaleString("id-ID")}
+
+                        </h2>
+
+                        <p className="stock">
+
+                            Stok :
+
+                            <strong>
+
+                                {" "}
+
+                                {product.stock}
+
+                            </strong>
+
+                        </p>
+
+                        <div className="description">
+
+                            <h3>
+
+                                Deskripsi
+
+                            </h3>
+
+                            <p>
+
+                                {product.description}
+
+                            </p>
+
+                        </div>
+
+                        <div className="qty-box">
+
+                            <button
+
+                                onClick={()=>
+
+                                    qty>1 &&
+
+                                    setQty(qty-1)
+
+                                }
+
+                            >
+
+                                <FiMinus/>
+
+                            </button>
+
+                            <span>
+
+                                {qty}
+
+                            </span>
+
+                            <button
+
+                                onClick={()=>
+
+                                    setQty(qty+1)
+
+                                }
+
+                            >
+
+                                <FiPlus/>
+
+                            </button>
+
+                        </div>
+
+                        <div className="detail-buttons">
+
+                            <button
+
+                                className="cart-btn"
+
+                                onClick={()=>
+
+                                    addToCart({
+
+                                        ...product,
+
+                                        quantity:qty
+
+                                    })
+
+                                }
+
+                            >
+
+                                <FiShoppingCart/>
+
+                                Tambah Keranjang
+
+                            </button>
+
+                            <button
+
+                                className={
+
+                                    isWishlisted
+
+                                    ?
+
+                                    "wishlist active"
+
+                                    :
+
+                                    "wishlist"
+
+                                }
+
+                                onClick={()=>
+
+                                    toggleWishlist(product)
+
+                                }
+
+                            >
+
+                                <FiHeart/>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </>
+
+    );
+
 }
 
 export default ProductDetail;

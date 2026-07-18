@@ -16,27 +16,34 @@ import "./AdminProduct.css";
 function AdminProduct() {
 
     const [products, setProducts] = useState([]);
+
     const [search, setSearch] = useState("");
+
     const [loading, setLoading] = useState(true);
+
     const [showModal, setShowModal] = useState(false);
+
     const [editingId, setEditingId] = useState(null);
+
+    const [imageFile, setImageFile] = useState(null);
+
     const [form, setForm] = useState({
 
-    category_id: 1,
+        category_id: 1,
 
-    brand: "",
+        brand: "",
 
-    name: "",
+        name: "",
 
-    description: "",
+        description: "",
 
-    price: "",
+        price: "",
 
-    stock: "",
+        stock: "",
 
-    image: ""
+        image: ""
 
-});
+    });
 
     async function getProducts() {
 
@@ -46,18 +53,275 @@ function AdminProduct() {
 
             setProducts(response.data.data);
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.log(error);
 
-            console.log(error.response);
+        }
 
-            console.log(error.response.data);
-
-
-        } finally {
+        finally {
 
             setLoading(false);
+
+        }
+
+    }
+
+    function handleChange(e) {
+
+        setForm({
+
+            ...form,
+
+            [e.target.name]: e.target.value
+
+        });
+
+    }
+
+    function handleImageChange(e) {
+
+        setImageFile(
+
+            e.target.files[0]
+
+        );
+
+    }
+
+    async function addProduct() {
+
+        try {
+
+            const formData = new FormData();
+
+            formData.append(
+
+                "category_id",
+
+                form.category_id
+
+            );
+
+            formData.append(
+
+                "brand",
+
+                form.brand
+
+            );
+
+            formData.append(
+
+                "name",
+
+                form.name
+
+            );
+
+            formData.append(
+
+                "description",
+
+                form.description
+
+            );
+
+            formData.append(
+
+                "price",
+
+                form.price
+
+            );
+
+            formData.append(
+
+                "stock",
+
+                form.stock
+
+            );
+
+            if (imageFile) {
+
+                formData.append(
+
+                    "image",
+
+                    imageFile
+
+                );
+
+            }
+
+            await api.post(
+
+                "/products",
+
+                formData,
+
+                {
+
+                    headers: {
+
+                        "Content-Type":
+
+                            "multipart/form-data"
+
+                    }
+
+                }
+
+            );
+
+            alert(
+
+                "Produk berhasil ditambahkan"
+
+            );
+
+            setShowModal(false);
+
+            resetForm();
+
+            getProducts();
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            alert(
+
+                "Gagal menambah produk"
+
+            );
+
+        }
+
+    }
+
+    async function updateProduct() {
+
+        try {
+
+            const formData = new FormData();
+
+            formData.append(
+
+                "category_id",
+
+                form.category_id
+
+            );
+
+            formData.append(
+
+                "brand",
+
+                form.brand
+
+            );
+
+            formData.append(
+
+                "name",
+
+                form.name
+
+            );
+
+            formData.append(
+
+                "description",
+
+                form.description
+
+            );
+
+            formData.append(
+
+                "price",
+
+                form.price
+
+            );
+
+            formData.append(
+
+                "stock",
+
+                form.stock
+
+            );
+
+            formData.append(
+
+                "image",
+
+                form.image
+
+            );
+
+            if (imageFile) {
+
+                formData.set(
+
+                    "image",
+
+                    imageFile
+
+                );
+
+            }
+
+            await api.put(
+
+                `/products/${editingId}`,
+
+                formData,
+
+                {
+
+                    headers: {
+
+                        "Content-Type":
+
+                            "multipart/form-data"
+
+                    }
+
+                }
+
+            );
+
+            alert(
+
+                "Produk berhasil diupdate"
+
+            );
+
+            setShowModal(false);
+
+            resetForm();
+
+            getProducts();
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            alert(
+
+                "Gagal update produk"
+
+            );
 
         }
 
@@ -66,175 +330,138 @@ function AdminProduct() {
     async function deleteProduct(id) {
 
         const confirmDelete = window.confirm(
+
             "Yakin ingin menghapus produk ini?"
+
         );
 
         if (!confirmDelete) return;
 
         try {
 
-            await api.delete(`/products/${id}`);
+            await api.delete(
+
+                `/products/${id}`
+
+            );
 
             getProducts();
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.log(error);
 
-            alert("Gagal menghapus produk");
+            alert(
+
+                "Gagal menghapus produk"
+
+            );
 
         }
 
     }
 
-    function handleChange(e) {
+    function editProduct(product) {
 
-    setForm({
+        setEditingId(product.id);
 
-        ...form,
+        setImageFile(null);
 
-        [e.target.name]:e.target.value
+        setForm({
 
-    });
+            category_id:
 
-}
+                product.category_id || 1,
 
-async function addProduct(){
+            brand:
 
-    try{
+                product.brand,
 
-        await api.post("/products",{
+            name:
 
-    ...form,
+                product.name,
 
-    category_id:1
+            description:
 
-});
+                product.description,
 
-        alert("Produk berhasil ditambahkan");
+            price:
 
-        setShowModal(false);
+                product.price,
 
-        resetForm();
+            stock:
 
-        getProducts();
+                product.stock,
 
-    }
+            image:
 
-    catch(error){
+                product.image
 
-        console.log(error);
+        });
 
-        alert("Gagal menambah produk");
-
-    }
-
-}
-
-async function updateProduct(){
-
-    try{
-
-        await api.put(
-
-            `/products/${editingId}`,
-
-            form
-
-        );
-
-        alert("Produk berhasil diupdate");
-
-        setShowModal(false);
-
-        resetForm();
-
-        getProducts();
+        setShowModal(true);
 
     }
 
-    catch(error){
+    function resetForm() {
 
-        console.log(error);
+        setEditingId(null);
 
-        alert("Gagal update produk");
+        setImageFile(null);
+
+        setForm({
+
+            category_id: 1,
+
+            brand: "",
+
+            name: "",
+
+            description: "",
+
+            price: "",
+
+            stock: "",
+
+            image: ""
+
+        });
 
     }
-
-}
-
-function resetForm(){
-
-    setEditingId(null);
-
-    setForm({
-
-        category_id: 1,
-
-    brand: "",
-
-    name: "",
-
-    description: "",
-
-    price: "",
-
-    stock: "",
-
-    image: ""
-
-    });
-
-}
-
-function editProduct(product){
-
-    setEditingId(product.id);
-
-    setForm({
-
-        category_id:product.category_id || "",
-
-        brand:product.brand,
-
-        name:product.name,
-
-        description:product.description,
-
-        price:product.price,
-
-        stock:product.stock,
-
-        image:product.image
-
-    });
-
-    setShowModal(true);
-
-}
 
     useEffect(() => {
 
         async function fetchProducts() {
+
         await getProducts();
+
     }
 
     fetchProducts();
-
-
     }, []);
 
-    const filteredProducts = products.filter((product) =>
+    const filteredProducts = products.filter(
 
-        product.name
-            .toLowerCase()
-            .includes(search.toLowerCase())
+        (product) =>
 
-    );
+            product.name
 
-    return (
+                .toLowerCase()
+
+                .includes(
+
+                    search.toLowerCase()
+
+                )
+
+    ); 
+
+        return (
 
         <>
+
             <Navbar />
 
             <main className="admin-page">
@@ -244,22 +471,31 @@ function editProduct(product){
                     <div>
 
                         <h1>
+
                             🛍️ Admin Products
+
                         </h1>
 
                         <p>
+
                             Kelola seluruh produk toko.
+
                         </p>
 
                     </div>
 
                     <Link
+
                         to="/admin"
+
                         className="back-button"
+
                     >
+
                         <FiArrowLeft />
 
                         Dashboard
+
                     </Link>
 
                 </div>
@@ -271,43 +507,58 @@ function editProduct(product){
                         <FiSearch />
 
                         <input
+
                             type="text"
+
                             placeholder="Cari produk..."
+
                             value={search}
-                            onChange={(e) =>
+
+                            onChange={(e)=>
+
                                 setSearch(e.target.value)
+
                             }
+
                         />
 
                     </div>
 
                     <button
 
-    className="add-button"
+                        className="add-button"
 
-    onClick={()=>{
+                        onClick={()=>{
 
-        resetForm();
+                            resetForm();
 
-        setShowModal(true);
+                            setShowModal(true);
 
-    }}
+                        }}
 
->
+                    >
 
-    <FiPlus/>
+                        <FiPlus />
 
-    Tambah Produk
+                        Tambah Produk
 
-</button>
+                    </button>
 
                 </div>
 
-                {loading ?
+                {
+
+                    loading
+
+                    ?
 
                     (
 
-                        <h3>Memuat Produk...</h3>
+                        <h3>
+
+                            Memuat Produk...
+
+                        </h3>
 
                     )
 
@@ -323,28 +574,33 @@ function editProduct(product){
 
                                     <tr>
 
-                                    <th>ID</th>
+                                        <th>ID</th>
 
-                                    <th>Brand</th>
+                                        <th>Brand</th>
 
-                                    <th>Produk</th>
+                                        <th>Produk</th>
 
-                                    <th>Harga</th>
+                                        <th>Harga</th>
 
-                                    <th>Stok</th>
+                                        <th>Stok</th>
 
-                                    <th>Aksi</th>
+                                        <th>Aksi</th>
 
                                     </tr>
+
                                 </thead>
 
                                 <tbody>
 
                                     {
 
-                                        filteredProducts.map((product) => (
+                                        filteredProducts.map((product)=>(
 
-                                            <tr key={product.id}>
+                                            <tr
+
+                                                key={product.id}
+
+                                            >
 
                                                 <td>
 
@@ -366,7 +622,19 @@ function editProduct(product){
 
                                                 <td>
 
-                                                    Rp {Number(product.price).toLocaleString("id-ID")}
+                                                    Rp {
+
+                                                        Number(
+
+                                                            product.price
+
+                                                        ).toLocaleString(
+
+                                                            "id-ID"
+
+                                                        )
+
+                                                    }
 
                                                 </td>
 
@@ -380,32 +648,29 @@ function editProduct(product){
 
                                                     <div className="action-buttons">
 
-                                                       <button
+                                                        <button
 
-                                                       className="edit-btn"
+                                                            className="edit-btn"
 
-                                                       onClick={()=>editProduct(product)}
-       
-                                                       >
+                                                            onClick={()=>editProduct(product)}
 
-                                                       <FiEdit2 />
+                                                        >
 
-                                                       </button>
+                                                            <FiEdit2 />
 
-         
-                                                       <button
+                                                        </button>
 
-                                                       className="delete-btn"
+                                                        <button
 
-                                                       onClick={() =>
-                                                       deleteProduct(product.id)
-                                                       }
+                                                            className="delete-btn"
 
-                                                       >
+                                                            onClick={()=>deleteProduct(product.id)}
 
-                                                       <FiTrash2 />
+                                                        >
 
-</button>
+                                                            <FiTrash2 />
+
+                                                        </button>
 
                                                     </div>
 
@@ -426,188 +691,263 @@ function editProduct(product){
                     )
 
                 }
-{
 
-showModal && (
+                {
 
-<div className="modal-overlay">
+                    showModal && (
 
-<div className="modal-box">
+                        <div className="modal-overlay">
 
-<button
+                            <div className="modal-box">
 
-className="close-modal"
+                                <button
 
-onClick={()=>{
+                                    className="close-modal"
 
-    setShowModal(false);
+                                    onClick={()=>{
 
-    resetForm();
+                                        setShowModal(false);
 
-}}
+                                        resetForm();
 
->
+                                    }}
 
-    ✕
+                                >
 
+                                    ✕
 
-</button>
+                                </button>
 
-<h2>
+                                <h2>
 
-    🌻{" "}
+                                    🌻 {
 
-    {editingId ? "Edit Produk" : "Tambah Produk"}
+                                        editingId
 
-</h2>
+                                        ?
 
-<input
+                                        "Edit Produk"
 
-type="text"
+                                        :
 
-name="brand"
+                                        "Tambah Produk"
 
-placeholder="Brand"
+                                    }
 
-value={form.brand}
+                                </h2>
 
-onChange={handleChange}
+                                <input
 
-/>
+                                    type="text"
 
-<input
+                                    name="brand"
 
-type="text"
+                                    placeholder="Brand"
 
-name="name"
+                                    value={form.brand}
 
-placeholder="Nama Produk"
+                                    onChange={handleChange}
 
-value={form.name}
+                                />
 
-onChange={handleChange}
+                                <input
 
-/>
+                                    type="text"
 
-<input
+                                    name="name"
 
-type="number"
+                                    placeholder="Nama Produk"
 
-name="price"
+                                    value={form.name}
 
-placeholder="Harga"
+                                    onChange={handleChange}
 
-value={form.price}
+                                />
 
-onChange={handleChange}
+                                <input
 
-/>
+                                    type="number"
 
-<input
+                                    name="price"
 
-type="number"
+                                    placeholder="Harga"
 
-name="stock"
+                                    value={form.price}
 
-placeholder="Stok"
+                                    onChange={handleChange}
 
-value={form.stock}
+                                />
 
-onChange={handleChange}
+                                <input
 
-/>
+                                    type="number"
 
-<textarea
+                                    name="stock"
 
-name="description"
+                                    placeholder="Stok"
 
-placeholder="Deskripsi"
+                                    value={form.stock}
 
-value={form.description}
+                                    onChange={handleChange}
 
-onChange={handleChange}
+                                />
 
-/>
+                                <textarea
 
-<input
+                                    name="description"
 
-type="text"
+                                    placeholder="Deskripsi"
 
-name="image"
+                                    value={form.description}
 
-placeholder="URL Gambar"
+                                    onChange={handleChange}
 
-value={form.image}
+                                />
 
-onChange={handleChange}
+                                <input
 
-/>
+                                    type="file"
 
-<div className="modal-buttons">
+                                    accept="image/*"
 
-<button
+                                    onChange={handleImageChange}
 
-className="cancel-btn"
+                                />
 
-onClick={()=>{
+                                {
 
-setShowModal(false);
+                                    imageFile && (
 
-resetForm();
+                                        <img
 
-}}
+                                            src={
 
->
+                                                URL.createObjectURL(
 
-Batal
+                                                    imageFile
 
-</button>
+                                                )
 
-<button
+                                            }
 
-className="save-btn"
+                                            alt="Preview"
 
-onClick={
+                                            style={{
 
-editingId
+                                                width:"180px",
 
-?
+                                                marginTop:"12px",
 
-updateProduct
+                                                borderRadius:"12px",
 
-:
+                                                objectFit:"cover"
 
-addProduct
+                                            }}
 
-}
+                                        />
 
->
+                                    )
 
-{
+                                }
 
-editingId
+                                {
 
-?
+                                    !imageFile &&
 
-"Simpan Perubahan"
+                                    editingId &&
 
-:
+                                    form.image && (
 
-"Tambah Produk"
+                                        <img
 
-}
+                                            src={`http://localhost:5000${form.image}`}
 
-</button>
+                                            alt="Preview"
 
-</div>
+                                            style={{
 
-</div>
+                                                width:"180px",
 
-</div>
+                                                marginTop:"12px",
 
-)
+                                                borderRadius:"12px",
 
-}
+                                                objectFit:"cover"
+
+                                            }}
+
+                                        />
+
+                                    )
+
+                                }
+
+                                <div className="modal-buttons">
+
+                                    <button
+
+                                        className="cancel-btn"
+
+                                        onClick={()=>{
+
+                                            setShowModal(false);
+
+                                            resetForm();
+
+                                        }}
+
+                                    >
+
+                                        Batal
+
+                                    </button>
+
+                                    <button
+
+                                        className="save-btn"
+
+                                        onClick={
+
+                                            editingId
+
+                                            ?
+
+                                            updateProduct
+
+                                            :
+
+                                            addProduct
+
+                                        }
+
+                                    >
+
+                                        {
+
+                                            editingId
+
+                                            ?
+
+                                            "Simpan Perubahan"
+
+                                            :
+
+                                            "Tambah Produk"
+
+                                        }
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )
+
+                }
+
             </main>
 
         </>

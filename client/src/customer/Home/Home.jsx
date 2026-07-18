@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
-
-import { useStore } from "../../context/StoreContext";
 import api from "../../api/axios";
-
+import { useStore } from "../../context/StoreContext";
 import "./Home.css";
 
 function Home() {
@@ -21,115 +18,95 @@ function Home() {
 
     } = useStore();
 
-
-
     const [products, setProducts] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
-
-
-    async function getProducts() {
-
-        try {
-
-            const response = await api.get(
-
-                "/products"
-
-            );
-
-            console.log(
-
-                "PRODUCTS :",
-
-                response.data
-
-            );
-
-            setProducts(
-
-                response.data.data
-
-            );
-
-        }
-
-        catch (error) {
-
-            console.log(error);
-
-        }
-
-        finally {
-
-            setLoading(false);
-
-        }
-
-    }
-
-
-
     useEffect(() => {
 
-        async function fetchProducts() {
+        async function getProducts() {
 
-            await getProducts();
+            try {
 
-        }
+                const response = await api.get(
 
-        fetchProducts();
-
-    }, []);
-
-
-
-
-    const filteredProducts = products.filter(product => {
-
-        const matchSearch =
-
-            product.name
-
-                .toLowerCase()
-
-                .includes(
-
-                    search.toLowerCase()
-
-                )
-
-            ||
-
-            product.brand
-
-                .toLowerCase()
-
-                .includes(
-
-                    search.toLowerCase()
+                    "/products"
 
                 );
 
+                setProducts(
 
+                    response.data.data
 
-        const matchCategory =
+                );
 
-            category === "Semua"
+            }
 
-            ||
+            catch (error) {
 
-            product.category === category;
+                console.log(error);
 
+            }
 
+            finally {
 
-        return matchSearch && matchCategory;
+                setLoading(false);
 
-    });
+            }
 
+        }
 
+        getProducts();
 
+    }, []);
+
+    const filteredProducts = products.filter(
+
+        (product) => {
+
+            const matchSearch =
+
+                product.name
+
+                    .toLowerCase()
+
+                    .includes(
+
+                        search.toLowerCase()
+
+                    )
+
+                ||
+
+                product.brand
+
+                    .toLowerCase()
+
+                    .includes(
+
+                        search.toLowerCase()
+
+                    );
+
+            const matchCategory =
+
+                category === "Semua"
+
+                ||
+
+                product.category === category;
+
+            return (
+
+                matchSearch &&
+
+                matchCategory
+
+            );
+
+        }
+
+    );
 
     return (
 
@@ -138,8 +115,6 @@ function Home() {
             <Navbar />
 
             <Hero />
-
-
 
             <main className="home">
 
@@ -151,13 +126,11 @@ function Home() {
 
                     </h2>
 
-
-
                     <select
 
                         value={category}
 
-                        onChange={(e) =>
+                        onChange={(e)=>
 
                             setCategory(
 
@@ -209,20 +182,19 @@ function Home() {
 
                 </div>
 
-
-
-
                 {
 
-                    loading ?
+                    loading
+
+                    ?
 
                     (
 
-                        <h3>
+                        <h2>
 
                             Memuat Produk...
 
-                        </h3>
+                        </h2>
 
                     )
 
@@ -234,7 +206,9 @@ function Home() {
 
                             {
 
-                                filteredProducts.length === 0 ?
+                                filteredProducts.length === 0
+
+                                ?
 
                                 (
 
@@ -248,17 +222,21 @@ function Home() {
 
                                 :
 
-                                filteredProducts.map(product => (
+                                filteredProducts.map(
 
-                                    <ProductCard
+                                    (product)=>(
 
-                                        key={product.id}
+                                        <ProductCard
 
-                                        product={product}
+                                            key={product.id}
 
-                                    />
+                                            product={product}
 
-                                ))
+                                        />
+
+                                    )
+
+                                )
 
                             }
 

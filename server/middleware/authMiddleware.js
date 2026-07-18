@@ -4,7 +4,16 @@ const jwt = require("jsonwebtoken");
 function authMiddleware(req,res,next){
 
 
+    console.log("AUTH CHECK MASUK");
+
+
     const authHeader = req.headers.authorization;
+
+
+    console.log(
+        "HEADER:",
+        authHeader
+    );
 
 
 
@@ -52,14 +61,40 @@ function authMiddleware(req,res,next){
         );
 
 
+
+        console.log(
+            "USER:",
+            decoded
+        );
+
+
+
         req.user = decoded;
+
+
+
+        console.log(
+            "SEBELUM NEXT"
+        );
 
 
         next();
 
 
+        console.log(
+            "SESUDAH NEXT"
+        );
 
-    }catch(error){
+
+    }
+
+    catch(error){
+
+
+        console.log(
+            "JWT ERROR:",
+            error
+        );
 
 
         return res.status(401).json({

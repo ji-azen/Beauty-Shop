@@ -4,55 +4,59 @@ const path = require("path");
 
 const storage = multer.diskStorage({
 
-    destination: function(req,file,cb){
+    destination: function (req, file, cb) {
 
-        cb(null,"uploads");
+        cb(null, "uploads/");
 
     },
 
-    filename: function(req,file,cb){
+    filename: function (req, file, cb) {
 
         const uniqueName =
 
-            Date.now()
-
-            +
+            Date.now() +
 
             path.extname(file.originalname);
 
-        cb(null,uniqueName);
+        cb(null, uniqueName);
 
     }
 
 });
 
-const fileFilter = (req,file,cb)=>{
+const fileFilter = (req, file, cb) => {
 
-    const allowed =
+    const allowedTypes =
 
-        /jpg|jpeg|png|webp/;
+        /jpeg|jpg|png|webp/;
 
-    const ext = allowed.test(
+    const extname =
 
-        path.extname(file.originalname).toLowerCase()
+        allowedTypes.test(
 
-    );
+            path.extname(file.originalname).toLowerCase()
 
-    const mime = allowed.test(
+        );
 
-        file.mimetype
+    const mimetype =
 
-    );
+        allowedTypes.test(file.mimetype);
 
-    if(ext && mime){
+    if (extname && mimetype) {
 
-        cb(null,true);
-
-    }else{
-
-        cb(new Error("File harus berupa gambar"));
+        return cb(null, true);
 
     }
+
+    cb(
+
+        new Error(
+
+            "Hanya file JPG, JPEG, PNG, atau WEBP"
+
+        )
+
+    );
 
 };
 

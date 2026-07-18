@@ -131,11 +131,15 @@ function createProduct(req, res) {
 
         price,
 
-        stock,
-
-        image
+        stock
 
     } = req.body;
+
+    const image = req.file
+
+        ? `/uploads/${req.file.filename}`
+
+        : "";
 
     if (
 
@@ -203,7 +207,7 @@ function createProduct(req, res) {
 
             stock,
 
-            image || ""
+            image
 
         ],
 
@@ -264,6 +268,12 @@ function updateProduct(req, res) {
 
     } = req.body;
 
+    const productImage = req.file
+
+        ? `/uploads/${req.file.filename}`
+
+        : image;
+
     const sql = `
 
         UPDATE products
@@ -306,7 +316,7 @@ function updateProduct(req, res) {
 
             stock,
 
-            image || "",
+            productImage,
 
             id
 

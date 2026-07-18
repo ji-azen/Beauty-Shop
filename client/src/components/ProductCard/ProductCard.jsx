@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom";
-
 import {
-
     FiHeart,
-
     FiShoppingCart,
-
     FiCheck
-
 } from "react-icons/fi";
 
+import api from "../../api/axios";
 import { useStore } from "../../context/StoreContext";
 
 import "./ProductCard.css";
@@ -17,8 +13,6 @@ import "./ProductCard.css";
 function ProductCard({ product }) {
 
     const {
-
-        addToCart,
 
         toggleWishlist,
 
@@ -28,15 +22,11 @@ function ProductCard({ product }) {
 
     } = useStore();
 
-
-
     const isWishlisted = wishlist.some(
 
         item => item.id === product.id
 
     );
-
-
 
     const isInCart = cart.some(
 
@@ -44,7 +34,65 @@ function ProductCard({ product }) {
 
     );
 
+    const imageUrl = product.image
 
+        ? `http://localhost:5000${product.image}`
+
+        : "https://placehold.co/400x400?text=No+Image";
+
+    async function addToCartDatabase() {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+
+            alert("Silakan login terlebih dahulu");
+
+            return;
+
+        }
+
+        try {
+
+            await api.post(
+
+                "/cart",
+
+                {
+
+                    product_id: product.id,
+
+                    quantity: 1
+
+                },
+
+                {
+
+                    headers: {
+
+                        Authorization: `Bearer ${token}`
+
+                    }
+
+                }
+
+            );
+
+            alert("🛒 Produk berhasil ditambahkan");
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            console.log(error.response);
+
+            alert("Gagal menambahkan produk");
+
+        }
+
+    }
 
     return (
 
@@ -60,27 +108,20 @@ function ProductCard({ product }) {
 
                 <img
 
-                    src={
-
-                        product.image
-
-                            ?
-
-                            product.image
-
-                            :
-
-                            "https://placehold.co/300x300?text=No+Image"
-
-                    }
+                    src={imageUrl}
 
                     alt={product.name}
+
+                    onError={(e) => {
+
+                        e.target.src =
+                            "https://placehold.co/400x400?text=No+Image";
+
+                    }}
 
                 />
 
             </Link>
-
-
 
             <div className="product-info">
 
@@ -89,8 +130,6 @@ function ProductCard({ product }) {
                     {product.brand}
 
                 </p>
-
-
 
                 <Link
 
@@ -108,29 +147,23 @@ function ProductCard({ product }) {
 
                 </Link>
 
+                <div className="rating">
 
+                    ⭐ {product.rating || 5}
 
-                <p className="category">
+                    <span>
 
-                    🌻 {product.category || "Beauty Product"}
+                        ({product.review || 0})
 
-                </p>
+                    </span>
 
-
+                </div>
 
                 <h2>
 
-                    Rp {
-
-                        Number(product.price)
-
-                            .toLocaleString("id-ID")
-
-                    }
+                    Rp {Number(product.price).toLocaleString("id-ID")}
 
                 </h2>
-
-
 
                 <div className="product-action">
 
@@ -162,8 +195,6 @@ function ProductCard({ product }) {
 
                     </button>
 
-
-
                     <button
 
                         className={
@@ -180,17 +211,15 @@ function ProductCard({ product }) {
 
                         }
 
-                        onClick={() =>
-
-                            addToCart(product)
-
-                        }
+                        onClick={addToCartDatabase}
 
                     >
 
                         {
 
-                            isInCart ?
+                            isInCart
+
+                                ?
 
                                 <>
 
